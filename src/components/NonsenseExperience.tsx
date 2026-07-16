@@ -140,15 +140,21 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
                 </p>
               )}
 
-              <div className="flex flex-col items-center gap-3">
-                <span
-                  className={`rounded-full border px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] ${universe.badge}`}
-                >
+              {/* The institution is the hero: readers should register the
+                  publisher before they register the joke. */}
+              <div className="flex flex-col items-center gap-3 border-b border-white/15 pb-6">
+                <h1 className="font-serif text-2xl uppercase leading-tight tracking-[0.04em] sm:text-3xl">
                   {universe.name}
-                </span>
-                {universe.masthead && (
-                  <p className="text-[10px] tracking-[0.15em] text-white/35">{universe.masthead}</p>
-                )}
+                </h1>
+                <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[10px] uppercase tracking-[0.2em] text-white/40">
+                  {universe.masthead && <span>{universe.masthead}</span>}
+                  {universe.masthead && universe.metadata && <span aria-hidden="true">·</span>}
+                  {universe.metadata && (
+                    <span>
+                      {universe.metadata.label}: {universe.metadata.value}
+                    </span>
+                  )}
+                </div>
                 {item.rarity === "rare" && (
                   <span className="rare-shimmer rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white">
                     ✦ Rare Nonsense
@@ -159,7 +165,7 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
               <div className="flex flex-col gap-3">
                 <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">{item.format}</p>
                 <p className="text-xs uppercase tracking-[0.3em] text-white/60">{item.title}</p>
-                <p className="font-serif text-2xl leading-snug sm:text-3xl">{item.body}</p>
+                <p className="font-serif text-xl leading-snug sm:text-2xl">{item.body}</p>
                 <p className="text-sm italic text-white/60">{universe.tagline}</p>
               </div>
 

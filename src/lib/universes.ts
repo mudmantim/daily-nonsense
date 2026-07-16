@@ -22,6 +22,10 @@ export interface Universe {
   // that makes the universe feel like a real institution rather than a
   // content category. Optional until copy exists for every universe.
   masthead?: string;
+  // A single recurring bureaucratic label/value pair (e.g. "Classification:
+  // Public Curiosity") - Chip's "just enough bureaucracy to make the world
+  // feel deeper" detail. Shown next to the masthead line.
+  metadata?: { label: string; value: string };
 }
 
 export const UNIVERSES: Record<UniverseId, Universe> = {
@@ -35,6 +39,7 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     badge: "border-sky-300/40 bg-sky-400/10 text-sky-100",
     canvasStops: ["#0ea5e9", "#2563eb", "#3730a3"],
     masthead: "Est. 1957 · Motto: “Probably.”",
+    metadata: { label: "Classification", value: "Public Curiosity" },
   },
   museum: {
     id: "museum",
@@ -46,6 +51,7 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     badge: "border-amber-300/40 bg-amber-400/10 text-amber-100",
     canvasStops: ["#d97706", "#c2410c", "#7f1d1d"],
     masthead: "Open Tuesdays. Closed during dramatic pauses.",
+    metadata: { label: "Archive Reference", value: "Filed Alphabetically-ish" },
   },
   committee: {
     id: "committee",
@@ -57,6 +63,7 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     badge: "border-rose-300/40 bg-rose-400/10 text-rose-100",
     canvasStops: ["#e11d48", "#b91c1c", "#9a3412"],
     masthead: "Emergency Session #418 · Attendance: Regrettably complete.",
+    metadata: { label: "Meeting Status", value: "Regrettably Quorate" },
   },
   wildlife: {
     id: "wildlife",
@@ -67,6 +74,8 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     accent: "text-emerald-100",
     badge: "border-emerald-300/40 bg-emerald-400/10 text-emerald-100",
     canvasStops: ["#059669", "#15803d", "#134e4a"],
+    masthead: "Field Office for Ordinary Creatures and Unusual Behavior",
+    metadata: { label: "Observer Confidence", value: "Surprisingly Certain" },
   },
   lostfound: {
     id: "lostfound",
@@ -77,6 +86,8 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     accent: "text-yellow-50",
     badge: "border-yellow-200/40 bg-yellow-300/10 text-yellow-50",
     canvasStops: ["#eab308", "#d97706", "#c2410c"],
+    masthead: "Items Awaiting Recognition Since Approximately Whenever",
+    metadata: { label: "Claim Window", value: "Optimistically Ongoing" },
   },
   notices: {
     id: "notices",
@@ -88,5 +99,6 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     badge: "border-slate-300/40 bg-slate-400/10 text-slate-100",
     canvasStops: ["#334155", "#1e293b", "#09090b"],
     masthead: "Issued under absolutely no authority whatsoever.",
+    metadata: { label: "Distribution", value: "Anyone Who Happens To Be Looking" },
   },
 };

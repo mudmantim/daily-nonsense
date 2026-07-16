@@ -27,9 +27,15 @@ export default function Archive() {
                 {universe.name}
               </span>
               <p className="text-xs italic text-white/50">{universe.tagline}</p>
-              {universe.masthead && (
-                <p className="text-[10px] tracking-[0.15em] text-white/30">{universe.masthead}</p>
-              )}
+              <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[10px] tracking-[0.15em] text-white/30">
+                {universe.masthead && <span>{universe.masthead}</span>}
+                {universe.masthead && universe.metadata && <span aria-hidden="true">·</span>}
+                {universe.metadata && (
+                  <span>
+                    {universe.metadata.label}: {universe.metadata.value}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="flex flex-col gap-4">
               {universeItems.map((item) => (
