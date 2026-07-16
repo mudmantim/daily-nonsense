@@ -539,15 +539,15 @@ export function getDayKey(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
-export function getTodayItem(): { item: DailyItem; dayKey: string } {
-  const today = new Date();
-  return { item: getItemForDate(today), dayKey: getDayKey(today) };
+// `now` is injectable (defaults to the real clock) so tests can pin a
+// date without monkeypatching the global Date object.
+export function getTodayItem(now: Date = new Date()): { item: DailyItem; dayKey: string } {
+  return { item: getItemForDate(now), dayKey: getDayKey(now) };
 }
 
-export function getYesterdayItem(): { item: DailyItem; dayKey: string } | null {
-  const today = new Date();
-  if (daysSinceEpoch(today) <= 0) return null;
-  const yesterday = new Date(today);
+export function getYesterdayItem(now: Date = new Date()): { item: DailyItem; dayKey: string } | null {
+  if (daysSinceEpoch(now) <= 0) return null;
+  const yesterday = new Date(now);
   yesterday.setUTCDate(yesterday.getUTCDate() - 1);
   return { item: getItemForDate(yesterday), dayKey: getDayKey(yesterday) };
 }
