@@ -4,7 +4,9 @@ export type UniverseId =
   | "committee"
   | "wildlife"
   | "lostfound"
-  | "notices";
+  | "notices"
+  | "bureau"
+  | "clarifications";
 
 export interface Universe {
   id: UniverseId;
@@ -79,7 +81,7 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
   },
   lostfound: {
     id: "lostfound",
-    name: "Lost & Found",
+    name: "The Lost & Found Authority",
     eyebrow: "Item Recovered",
     tagline: "Please claim within a reasonable, undefined amount of time.",
     gradient: "from-yellow-500 via-amber-600 to-orange-700",
@@ -100,5 +102,29 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     canvasStops: ["#334155", "#1e293b", "#09090b"],
     masthead: "Issued under absolutely no authority whatsoever.",
     metadata: { label: "Distribution", value: "Anyone Who Happens To Be Looking" },
+  },
+  bureau: {
+    id: "bureau",
+    name: "The Bureau of Mild Emergencies",
+    eyebrow: "Situation Report",
+    tagline: "Concerning, but not actionable.",
+    gradient: "from-amber-500 via-orange-600 to-rose-700",
+    accent: "text-amber-50",
+    badge: "border-amber-300/40 bg-amber-400/10 text-amber-50",
+    canvasStops: ["#f59e0b", "#ea580c", "#be123c"],
+    masthead: "Est. 2009 · Responding since before anyone was worried.",
+    metadata: { label: "Status", value: "De-escalated to Baseline" },
+  },
+  clarifications: {
+    id: "clarifications",
+    name: "The Office of Public Clarifications",
+    eyebrow: "Statement",
+    tagline: "Further clarification is not available at this time.",
+    gradient: "from-slate-500 via-zinc-600 to-slate-800",
+    accent: "text-slate-100",
+    badge: "border-slate-300/40 bg-slate-400/10 text-slate-100",
+    canvasStops: ["#64748b", "#52525b", "#1e293b"],
+    masthead: "Est. 2009 · Clarifying nothing since inception.",
+    metadata: { label: "Clarification Status", value: "Pending Indefinitely" },
   },
 };
