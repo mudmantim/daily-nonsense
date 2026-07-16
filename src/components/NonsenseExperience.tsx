@@ -129,9 +129,9 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
           ) : (
             <motion.div
               key="reveal"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, ease: "easeOut" }}
+              initial={{ opacity: 0, scale: 1.16, rotate: -2 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 340, damping: 20, mass: 0.6 }}
               className="flex w-full flex-col items-center gap-8"
             >
               {mode === "yesterday" && (
@@ -146,6 +146,9 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
                 >
                   {universe.name}
                 </span>
+                {universe.masthead && (
+                  <p className="text-[10px] tracking-[0.15em] text-white/35">{universe.masthead}</p>
+                )}
                 {item.rarity === "rare" && (
                   <span className="rare-shimmer rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white">
                     ✦ Rare Nonsense

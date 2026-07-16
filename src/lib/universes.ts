@@ -17,6 +17,11 @@ export interface Universe {
   // Hex stops mirroring `gradient`, for canvas-rendered share cards
   // (canvas can't read Tailwind's gradient classes directly).
   canvasStops: [string, string, string];
+  // Recurring letterhead line (est. date, motto, issuing authority) that
+  // appears on every item regardless of format - the worldbuilding detail
+  // that makes the universe feel like a real institution rather than a
+  // content category. Optional until copy exists for every universe.
+  masthead?: string;
 }
 
 export const UNIVERSES: Record<UniverseId, Universe> = {
@@ -29,6 +34,7 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     accent: "text-sky-100",
     badge: "border-sky-300/40 bg-sky-400/10 text-sky-100",
     canvasStops: ["#0ea5e9", "#2563eb", "#3730a3"],
+    masthead: "Est. 1957 · Motto: “Probably.”",
   },
   museum: {
     id: "museum",
@@ -39,6 +45,7 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     accent: "text-amber-100",
     badge: "border-amber-300/40 bg-amber-400/10 text-amber-100",
     canvasStops: ["#d97706", "#c2410c", "#7f1d1d"],
+    masthead: "Open Tuesdays. Closed during dramatic pauses.",
   },
   committee: {
     id: "committee",
@@ -49,6 +56,7 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     accent: "text-rose-100",
     badge: "border-rose-300/40 bg-rose-400/10 text-rose-100",
     canvasStops: ["#e11d48", "#b91c1c", "#9a3412"],
+    masthead: "Emergency Session #418 · Attendance: Regrettably complete.",
   },
   wildlife: {
     id: "wildlife",
@@ -79,5 +87,6 @@ export const UNIVERSES: Record<UniverseId, Universe> = {
     accent: "text-slate-100",
     badge: "border-slate-300/40 bg-slate-400/10 text-slate-100",
     canvasStops: ["#334155", "#1e293b", "#09090b"],
+    masthead: "Issued under absolutely no authority whatsoever.",
   },
 };

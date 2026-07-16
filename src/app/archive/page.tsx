@@ -27,6 +27,9 @@ export default function Archive() {
                 {universe.name}
               </span>
               <p className="text-xs italic text-white/50">{universe.tagline}</p>
+              {universe.masthead && (
+                <p className="text-[10px] tracking-[0.15em] text-white/30">{universe.masthead}</p>
+              )}
             </div>
             <div className="flex flex-col gap-4">
               {universeItems.map((item) => (
