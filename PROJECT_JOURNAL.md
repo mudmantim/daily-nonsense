@@ -77,3 +77,32 @@ Running log of engineering/product sessions. Written so a reader can understand 
 3. **Decide the "surfacing the lore" question** — if there's appetite for a light in-app institution page, that's a real design decision worth making deliberately rather than defaulting either way.
 
 My own recommendation, if asked to pick one: **option 1 or 2** — the code and world are in good shape; the highest-leverage next move is getting real reactions (from Chip, from Tim, or from actual visitors) rather than more unreviewed content or engineering.
+
+---
+
+## Session 4 — Autonomy audit (2026-07-16, continued)
+
+**New brief:** eliminate unnecessary human involvement in the workflow itself — not a product feature request. Explicit constraint: don't weaken security, don't bypass authentication; find real friction and automate it, document what can't be automated and why.
+
+**What I observed:** the manual steps in this workflow split cleanly into two categories that look similar from the outside but aren't: (a) pure mechanical friction — re-approving the same safe commands, running four separate verification commands, forgetting to test before committing — which had never been addressed simply because nobody had gotten to it; and (b) things that look like friction but are actually load-bearing — Claude Code's permission gate on mutating actions, the authentication tying "Chip" to Tim's own ChatGPT account, and specifically the checkpoints where Tim reviews and redirects, which is the mechanism that's made the whole three-way collaboration work rather than drift.
+
+**Decisions made:**
+1. `npm run verify` / `verify:fast` — one command instead of four.
+2. `.githooks/pre-commit` (tracked via `core.hooksPath`, not the untracked `.git/hooks/`) running `verify:fast` automatically before every commit. Tested live — confirmed it actually fires on a real commit, not just in isolation.
+3. Invoked the `fewer-permission-prompts` skill: scanned this project's own transcripts, allowlisted 11 narrowly-scoped, genuinely read-only patterns in `.claude/settings.json` (typecheck with `--noEmit` anchored in the pattern, lint without `--fix`, the new verify scripts as exact script names rather than a `npm run *` wildcard, and three read-only browser-inspection MCP tools).
+4. Rewrote `README.md` from unedited create-next-app boilerplate into something that explains the actual project and workflow.
+5. Wrote `AUTONOMY.md`: a full inventory of ten manual steps, which are removable, which aren't, and why.
+
+**Alternatives considered and explicitly not implemented:**
+- Allowlisting `mcp__claude-in-chrome__computer`/`browser_batch`/`javascript_tool`/`navigate` despite being the most-used tools all session (82, 43, 7, 5 calls) — rejected. These bundle read actions with actions that submit forms, click arbitrary buttons, or run page JS; the permission system can't distinguish "harmless screenshot" from "click Submit" at the tool-name level, so allowlisting broadly would mean any future browser action runs unreviewed, including one triggered by something read on an untrusted page.
+- Unattended scheduled/cloud execution (to satisfy "resumable after power loss/sleep") — considered in real detail (a concrete phased design is in `AUTONOMY.md`), not implemented. This is a qualitatively different kind of automation from everything else in this session: it removes the property that's held throughout every other change here, that a human can watch the work happen in real time. Setting up standing, persistent automation like this needs an explicit, specific yes — not a default reached by interpreting "reduce friction" broadly.
+- A fully autonomous Claude↔Chip loop with no checkpoint ever reaching Tim ("automatic product reviews") — explicitly rejected, not just deferred. This is the one place I think full automation would make the *product* worse, not just the workflow faster: the thing that's actually made this collaboration work is Tim reviewing and redirecting at checkpoints, confirmed by how the last several checkpoints went and by Chip's own read on why the experiment succeeded. Automating that away by default isn't the same thing as reducing friction — it's quietly deciding a question ("should Tim stay in the loop") that was never actually asked.
+- Switching Chip from browser automation to an OpenAI API integration — not implemented; this changes what "Chip" *is* (Tim's own ChatGPT persona vs. a generic bot) and would need Tim to provision his own credential. Documented as an option, not a default.
+
+**Problems discovered:** none new; this was an audit-and-fix session rather than a bug-hunting one. Confirmed the pre-commit hook actually intercepts a real commit rather than just working in isolation (ran it once standalone, then again for real as part of the commit that introduced it).
+
+**Verification performed:** `npm run verify` (lint + typecheck + test + build, all clean) run twice — once before writing `AUTONOMY.md`, once after, to confirm the documentation work didn't touch anything that could regress.
+
+**Ideas deferred:** none new beyond what's already tracked in `AUTONOMY.md`'s "proposed, not implemented" section (phased scheduled-run design, journal-checkpoint pattern as the deliberate alternative to a fully autonomous review loop).
+
+**Recommended next direction:** same three options as Session 3 (ship/soft-launch, a Chip voice-consistency pass, or the surfacing-the-lore product decision) still stand — this session was infrastructure, not new product surface area. If Tim specifically wants to pursue unattended scheduled execution, the phased design in `AUTONOMY.md` (read-only canary run first, then draft-not-commit, then full autonomy only once both have proven stable) is what I'd actually build, rather than going straight to full autonomy.
