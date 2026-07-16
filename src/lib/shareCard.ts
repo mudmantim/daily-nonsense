@@ -76,11 +76,15 @@ export function renderShareCard(item: DailyItem): Promise<Blob> {
   ctx.fillText(item.format.toUpperCase(), WIDTH / 2, y);
   y += 50;
 
-  // Title
-  ctx.font = "600 34px Georgia, serif";
-  ctx.fillStyle = "rgba(255,255,255,0.85)";
-  ctx.fillText(item.title, WIDTH / 2, y);
-  y += 90;
+  // Title (skip if identical to the format label directly above it)
+  if (item.title !== item.format) {
+    ctx.font = "600 34px Georgia, serif";
+    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.fillText(item.title, WIDTH / 2, y);
+    y += 90;
+  } else {
+    y += 20;
+  }
 
   // Body (wrapped, serif, large)
   ctx.font = "44px Georgia, serif";

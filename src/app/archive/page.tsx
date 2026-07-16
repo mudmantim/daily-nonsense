@@ -44,7 +44,9 @@ export default function Archive() {
                   className={`rounded-2xl border border-white/10 bg-gradient-to-br p-5 ${universe.gradient}`}
                 >
                   <p className="text-[10px] uppercase tracking-[0.25em] text-white/40">{item.format}</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-white/60">{item.title}</p>
+                  {item.title !== item.format && (
+                    <p className="mt-1 text-xs uppercase tracking-[0.2em] text-white/60">{item.title}</p>
+                  )}
                   <p className="mt-3 font-serif text-lg leading-snug">{item.body}</p>
                   {item.rarity === "rare" && (
                     <span className="rare-shimmer mt-3 inline-block rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white">

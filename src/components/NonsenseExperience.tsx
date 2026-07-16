@@ -164,7 +164,9 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
 
               <div className="flex flex-col gap-3">
                 <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">{item.format}</p>
-                <p className="text-xs uppercase tracking-[0.3em] text-white/60">{item.title}</p>
+                {item.title !== item.format && (
+                  <p className="text-xs uppercase tracking-[0.3em] text-white/60">{item.title}</p>
+                )}
                 <p className="font-serif text-xl leading-snug sm:text-2xl">{item.body}</p>
                 <p className="text-sm italic text-white/60">{universe.tagline}</p>
               </div>
