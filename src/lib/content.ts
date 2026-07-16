@@ -3,6 +3,10 @@ import { UniverseId } from "./universes";
 export interface DailyItem {
   id: string;
   universe: UniverseId;
+  // The in-universe document type this item is styled as (Chip's "Layer 2":
+  // Research Finding, Meeting Minutes, Wildlife Alert, etc). Shown as a small
+  // label above the headline.
+  format: string;
   title: string;
   body: string;
   rarity: "common" | "rare";
@@ -14,54 +18,89 @@ export function shareTextFor(item: DailyItem): string {
 
 // The archive. Rotates in a fixed, deterministic order so every visitor
 // sees the same item on the same day without needing a backend.
+// Copy authored by Chip (product/humor direction); Claude owns the
+// universe/format data model these entries are stored in.
 const CONTENT_POOL: DailyItem[] = [
-  // The Department of Extremely Important Research
-  { id: "deir-1", universe: "deir", title: "Finding No. 014", body: "A goose can hold a grudge for approximately three municipal elections.", rarity: "common" },
-  { id: "deir-2", universe: "deir", title: "Finding No. 227", body: "Researchers confirm that the average houseplant judges you, but only on Tuesdays.", rarity: "common" },
-  { id: "deir-3", universe: "deir", title: "Finding No. 118", body: "Under laboratory conditions, four out of five pigeons preferred the second-nicest breadcrumb, out of spite.", rarity: "common" },
-  { id: "deir-4", universe: "deir", title: "Finding No. 1,204", body: "New data suggests that socks do not go missing. They are simply promoted.", rarity: "common" },
-  { id: "deir-5", universe: "deir", title: "Finding No. 059", body: "A study of 12,000 doorknobs found that none of them wanted to talk about it.", rarity: "common" },
-  { id: "deir-6", universe: "deir", title: "Finding No. 300", body: "It has been mathematically proven that the last slice of pizza gains 40% more emotional weight per minute it remains uneaten.", rarity: "rare" },
-
-  // The Museum of Useless History
-  { id: "museum-1", universe: "museum", title: "Exhibit 12", body: "In 1622, a Dutch village briefly elected a very confident duck as harbor master. Records indicate the duck served two full terms.", rarity: "common" },
-  { id: "museum-2", universe: "museum", title: "Exhibit 88", body: "The Great Umbrella Standoff of 1889 lasted four days and ended in a draw, as agreed upon by everyone involved and several bystanders.", rarity: "common" },
-  { id: "museum-3", universe: "museum", title: "Exhibit 41", body: "Historians believe the world's first traffic jam was two people arguing about who invented the wheel first.", rarity: "common" },
-  { id: "museum-4", universe: "museum", title: "Exhibit 156", body: "A minor 14th-century kingdom once went to war over the correct way to fold a napkin. The napkin has never been recovered.", rarity: "common" },
-  { id: "museum-5", universe: "museum", title: "Exhibit 7", body: "In 1975, a man in Ohio was legally declared 'mildly haunted' by a local court. The ruling was never appealed.", rarity: "common" },
-  { id: "museum-6", universe: "museum", title: "Exhibit 203", body: "The Treaty of Overly Specific Terms (1801) is nine pages long and concerns only the ownership of one particular goat.", rarity: "rare" },
-
-  // The Committee for Poor Decisions
-  { id: "committee-1", universe: "committee", title: "Official Advisory No. 3", body: "If a decision feels 60% good, that's basically 100% good. Round up. Always round up.", rarity: "common" },
-  { id: "committee-2", universe: "committee", title: "Official Advisory No. 41", body: "When in doubt, reply-all. Let everyone share in the doubt.", rarity: "common" },
-  { id: "committee-3", universe: "committee", title: "Official Advisory No. 12", body: "There is no wrong time to bring up your fantasy football team.", rarity: "common" },
-  { id: "committee-4", universe: "committee", title: "Official Advisory No. 27", body: "Texting 'we should catch up sometime' legally counts as catching up. This has been reviewed by nobody.", rarity: "common" },
-  { id: "committee-5", universe: "committee", title: "Official Advisory No. 9", body: "The best time to start a new diet is directly after ordering dessert.", rarity: "common" },
-  { id: "committee-6", universe: "committee", title: "Official Advisory No. 68", body: "If you forget someone's name, commit to calling them 'chief' for the rest of your relationship.", rarity: "rare" },
-
-  // Neighborhood Wildlife Reports
-  { id: "wildlife-1", universe: "wildlife", title: "Bulletin 44", body: "The raccoon behind the Petersons' shed has unionized. Demands include: more trash, less judgment.", rarity: "common" },
-  { id: "wildlife-2", universe: "wildlife", title: "Bulletin 19", body: "Three geese have been loitering outside the coffee shop since Tuesday. Their intentions remain unclear and deeply suspicious.", rarity: "common" },
-  { id: "wildlife-3", universe: "wildlife", title: "Bulletin 63", body: "A squirrel was seen making direct eye contact with a jogger for eleven full seconds. Neither party has commented.", rarity: "common" },
-  { id: "wildlife-4", universe: "wildlife", title: "Bulletin 8", body: "The neighborhood cats have resumed their nightly council meetings. Agenda items are, as always, classified.", rarity: "common" },
-  { id: "wildlife-5", universe: "wildlife", title: "Bulletin 91", body: "Local pigeons have begun walking in a suspiciously coordinated formation near the bank. Authorities are 'monitoring the situation, sort of.'", rarity: "common" },
-  { id: "wildlife-6", universe: "wildlife", title: "Bulletin 27", body: "A possum has claimed the recycling bin as a sovereign nation. It is not accepting visitors at this time.", rarity: "rare" },
-
-  // Lost & Found
-  { id: "lostfound-1", universe: "lostfound", title: "Item Recovered #205", body: "One (1) emotionally unavailable scarecrow. Straw-stuffed. Commitment issues included.", rarity: "common" },
-  { id: "lostfound-2", universe: "lostfound", title: "Item Recovered #118", body: "A single left shoe, extremely confident about its chances of being reunited with its pair.", rarity: "common" },
-  { id: "lostfound-3", universe: "lostfound", title: "Item Recovered #77", body: "One slightly damp motivational poster reading 'YOU CAN DO IT,' found face-down in the parking lot.", rarity: "common" },
-  { id: "lostfound-4", universe: "lostfound", title: "Item Recovered #310", body: "A jar labeled 'DO NOT OPEN — SERIOUSLY.' Contents unknown. Curiosity levels rising.", rarity: "common" },
-  { id: "lostfound-5", universe: "lostfound", title: "Item Recovered #142", body: "One garden gnome, found several yards from where it was originally placed, with a suspicious amount of dirt on its shoes.", rarity: "common" },
-  { id: "lostfound-6", universe: "lostfound", title: "Item Recovered #56", body: "A to-do list with only one item: 'figure out what happened to the other to-do lists.'", rarity: "rare" },
-
-  // Official Public Notices
-  { id: "notices-1", universe: "notices", title: "Public Notice #4471", body: "Effective immediately, all sighs during Monday meetings must be pre-approved by Facilities.", rarity: "common" },
-  { id: "notices-2", universe: "notices", title: "Public Notice #1102", body: "Residents are reminded that the streetlight on Elm has feelings, and it heard what you said about it.", rarity: "common" },
-  { id: "notices-3", universe: "notices", title: "Public Notice #290", body: "Due to unforeseen circumstances, Tuesday has been rescheduled. Please proceed directly to Wednesday.", rarity: "common" },
-  { id: "notices-4", universe: "notices", title: "Public Notice #8", body: "This is a reminder that the office plant in the break room is now the senior-most employee, having outlasted seven managers.", rarity: "common" },
-  { id: "notices-5", universe: "notices", title: "Public Notice #3305", body: "All complaints regarding the weather should be submitted in triplicate to nobody in particular.", rarity: "common" },
-  { id: "notices-6", universe: "notices", title: "Public Notice #612", body: "By order of nobody official, the word 'moist' remains banned from all internal communications until further notice.", rarity: "rare" },
+  {
+    id: "deir-1",
+    universe: "deir",
+    format: "Research Finding",
+    title: "New Study Finds",
+    body: "People who say “I'll just rest my eyes” are asleep within four minutes. Researchers were unavailable for comment. They were resting their eyes.",
+    rarity: "common",
+  },
+  {
+    id: "deir-2",
+    universe: "deir",
+    format: "Research Finding",
+    title: "Finding",
+    body: "Scientists confirm that soup tastes approximately 12% better when someone else makes it. Further funding has been requested.",
+    rarity: "rare",
+  },
+  {
+    id: "wildlife-1",
+    universe: "wildlife",
+    format: "Wildlife Alert",
+    title: "Squirrel Activity Update",
+    body: "A squirrel spent twenty-three uninterrupted minutes pretending not to notice a human. Experts describe the performance as “convincing.”",
+    rarity: "rare",
+  },
+  {
+    id: "wildlife-2",
+    universe: "wildlife",
+    format: "Incident Report",
+    title: "Incident Report",
+    body: "A crow has once again been observed acting like it owns the parking lot. No evidence has been found suggesting otherwise.",
+    rarity: "common",
+  },
+  {
+    id: "committee-1",
+    universe: "committee",
+    format: "Meeting Minutes",
+    title: "Meeting Minutes",
+    body: "Motion: “Maybe it'll fix itself.” Passed unanimously.",
+    rarity: "common",
+  },
+  {
+    id: "committee-2",
+    universe: "committee",
+    format: "Official Recommendation",
+    title: "Reminder",
+    body: "Just because it's technically a shortcut does not make it a good idea.",
+    rarity: "common",
+  },
+  {
+    id: "museum-1",
+    universe: "museum",
+    format: "Newly Unearthed Artifact",
+    title: "Artifact #442",
+    body: "Wooden Spoon. Estimated age: Tuesday.",
+    rarity: "rare",
+  },
+  {
+    id: "museum-2",
+    universe: "museum",
+    format: "Curator's Notes",
+    title: "Today's Exhibit",
+    body: "An unopened instruction manual. Believed to have belonged to someone extremely optimistic.",
+    rarity: "common",
+  },
+  {
+    id: "notices-1",
+    universe: "notices",
+    format: "Public Notice",
+    title: "Public Notice",
+    body: "Residents are reminded that talking to houseplants is encouraged. Arguments, however, should remain under five minutes.",
+    rarity: "common",
+  },
+  {
+    id: "lostfound-1",
+    universe: "lostfound",
+    format: "Item Recovered",
+    title: "Found",
+    body: "One left sock. Condition: Emotionally prepared.",
+    rarity: "common",
+  },
 ];
 
 function mulberry32(seed: number) {
@@ -116,4 +155,13 @@ export function getYesterdayItem(): { item: DailyItem; dayKey: string } | null {
   const yesterday = new Date(today);
   yesterday.setUTCDate(yesterday.getUTCDate() - 1);
   return { item: getItemForDate(yesterday), dayKey: getDayKey(yesterday) };
+}
+
+// Genuinely random (not date-seeded) — a fresh roll each time the page loads.
+export function getRandomItem(): DailyItem {
+  return CONTENT_POOL[Math.floor(Math.random() * CONTENT_POOL.length)];
+}
+
+export function getAllItems(): DailyItem[] {
+  return CONTENT_POOL;
 }

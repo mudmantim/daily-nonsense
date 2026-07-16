@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { DailyItem, shareTextFor } from "@/lib/content";
 import { UNIVERSES } from "@/lib/universes";
+import { renderShareCard } from "@/lib/shareCard";
 import {
   EXPIRED_COPY,
   LOADING_PHRASES,
@@ -18,7 +19,7 @@ import {
 interface Props {
   item: DailyItem;
   dayKey: string;
-  mode: "today" | "yesterday";
+  mode: "today" | "yesterday" | "random";
 }
 
 type Stage = "loading" | "revealed";
@@ -27,7 +28,7 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
   const universe = UNIVERSES[item.universe];
   const reactionKey = `dn-reaction-${dayKey}`;
 
-  const [stage, setStage] = useState<Stage>(mode === "yesterday" ? "revealed" : "loading");
+  const [stage, setStage] = useState<Stage>(mode === "today" ? "loading" : "revealed");
   const [loadingPhrase] = useState(() => pickForKey(LOADING_PHRASES, dayKey));
   const [reaction, setReaction] = useState<ReactionKind | null>(null);
   const [reactionNote, setReactionNote] = useState<string | null>(null);
@@ -51,21 +52,54 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
     if (typeof window !== "undefined") localStorage.setItem(reactionKey, kind);
   }
 
+  function flashNote(note: string) {
+    setShareNote(note);
+    setTimeout(() => setShareNote(null), 2600);
+  }
+
   async function handleShare() {
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
+        const blob = await renderShareCard(item);
+        const file = new File([blob], "daily-nonsense.png", { type: "image/png" });
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({ title: "The Daily Nonsense", text: shareText, files: [file] });
+          return;
+        }
         await navigator.share({ title: "The Daily Nonsense", text: shareText });
         return;
       } catch {
-        // user cancelled or share failed; fall through to clipboard
+        // user cancelled, or share/render failed; fall through to clipboard
       }
     }
     try {
       await navigator.clipboard.writeText(shareText);
-      setShareNote(pickRandom(SHARE_CONFIRMATIONS));
-      setTimeout(() => setShareNote(null), 2600);
+      flashNote(pickRandom(SHARE_CONFIRMATIONS));
     } catch {
       setShareNote("Couldn't copy. Select the text above instead.");
+    }
+  }
+
+  async function handleCopyImage() {
+    try {
+      const blob = await renderShareCard(item);
+      await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+      flashNote(pickRandom(SHARE_CONFIRMATIONS));
+      return;
+    } catch {
+      // Clipboard image writes aren't supported everywhere; download instead.
+    }
+    try {
+      const blob = await renderShareCard(item);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "daily-nonsense.png";
+      a.click();
+      URL.revokeObjectURL(url);
+      flashNote("Image downloaded.");
+    } catch {
+      setShareNote("Couldn't create the image.");
     }
   }
 
@@ -119,7 +153,8 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
                 )}
               </div>
 
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-3">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">{item.format}</p>
                 <p className="text-xs uppercase tracking-[0.3em] text-white/60">{item.title}</p>
                 <p className="font-serif text-2xl leading-snug sm:text-3xl">{item.body}</p>
                 <p className="text-sm italic text-white/60">{universe.tagline}</p>
@@ -161,12 +196,20 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
               </div>
 
               <div className="flex flex-col items-center gap-2">
-                <button
-                  onClick={handleShare}
-                  className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90"
-                >
-                  Share today&rsquo;s nonsense
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleShare}
+                    className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90"
+                  >
+                    Share
+                  </button>
+                  <button
+                    onClick={handleCopyImage}
+                    className="rounded-full border border-white/40 bg-white/5 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-white/15"
+                  >
+                    Copy image
+                  </button>
+                </div>
                 <div className="h-5">
                   <AnimatePresence>
                     {shareNote && (
@@ -183,12 +226,38 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
                 </div>
               </div>
 
-              <Link
-                href={mode === "today" ? "/yesterday" : "/"}
-                className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
-              >
-                {mode === "today" ? "See yesterday's nonsense" : "Back to today"}
-              </Link>
+              <nav className="flex gap-5">
+                {mode !== "today" && (
+                  <Link
+                    href="/"
+                    className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
+                  >
+                    Today
+                  </Link>
+                )}
+                {mode !== "yesterday" && (
+                  <Link
+                    href="/yesterday"
+                    className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
+                  >
+                    Yesterday
+                  </Link>
+                )}
+                {mode !== "random" && (
+                  <Link
+                    href="/random"
+                    className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
+                  >
+                    Random
+                  </Link>
+                )}
+                <Link
+                  href="/archive"
+                  className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
+                >
+                  Archive
+                </Link>
+              </nav>
             </motion.div>
           )}
         </AnimatePresence>
