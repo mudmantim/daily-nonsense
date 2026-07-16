@@ -67,19 +67,32 @@ These are real options I considered and did **not** wire up unilaterally, becaus
 **Recommended shape, if Tim wants this:** start narrow and reversible —
 1. A scheduled run that only executes `npm run verify` and appends a status line to `PROJECT_JOURNAL.md` (read-only w.r.t. actual product content). Zero risk, immediately useful as a canary.
 2. If that's stable, expand to: scheduled run drafts content/code changes and opens a diff (as a branch or a patch file) rather than committing to `master` directly, so a human reviews before it lands.
-3. Only after both of those have run cleanly for a while would fully unattended commit-to-master make sense — and even then, I'd recommend it never includes autonomous Chip interaction (see B) in the same unattended cycle, so a product-voice mistake can't multiply unreviewed.
+3. Only after both of those have run cleanly for a while would fully unattended commit-to-master make sense.
 
-**Priority:** medium value, but this is Tim's call specifically, not mine.
+**Staging note (revised):** Tim asked for the canary to also prove out autonomous Chip communication (resume → inspect → review → journal → summarize → critique → communicate with Chip → stop safely), not just repo-internal checks. That's a reasonable scope for the canary's *capabilities* — but standing that up as an actual unattended, recurring `CronCreate` job is a further step beyond proving the capabilities work. Sending messages into Tim's own ChatGPT account is the kind of action that normally gets a yes per-instance, not a standing blanket yes; turning it into something that fires on a schedule with nobody watching is a real, separate decision. So this got split into two steps:
 
-### B. Fully autonomous Chip loop ("automatic product reviews")
+- **Step 1 (done, see Session 5 in `PROJECT_JOURNAL.md`):** run the full capability set *live, once, manually* in an interactive session — resume context from the journal, inspect the repo, run a real Chip review pass, journal the results, summarize to Tim — with zero repo modification. This proves the mechanics work before anything runs unattended.
+- **Step 2 (not yet done — needs Tim's specific go-ahead on schedule/trigger):** wire the same sequence up as an actual `CronCreate` recurring job. I'd want to confirm frequency and exactly what it's allowed to initiate (e.g., can it open a *new* topic with Chip, or only continue a thread Tim's already started?) before creating a standing job that messages an external account unattended.
 
-**What it would look like:** Claude writes something, autonomously posts it to Chip, reads the response, revises, and repeats — indefinitely, without a checkpoint ever reaching Tim.
+**Priority:** Step 1 done this session. Step 2 is medium value, pending Tim's specific confirmation of the mechanics.
 
-**Why I didn't build it:** this is the one item in the whole brief that I think would make the product *worse*, not just faster, if fully automated. The entire premise of the Claude+Chip+Tim workflow — confirmed explicitly by Chip himself, and by how well the last several checkpoints went — is that Tim is the one who "recognizes when something has a soul." Removing him from every checkpoint doesn't just save him clicks; it removes the only mechanism that catches the workflow drifting somewhere he wouldn't have chosen. Tim's own instruction two messages ago was "only ask me questions when the answer would materially change the product's direction" — which presupposes those moments still reach him. Fully automating this away would be answering that kind of question by *default-erasing it*, which isn't the same thing as making a good default.
+### B. Autonomous Claude↔Chip iteration within the existing product vision
 
-**Recommended alternative:** keep individual Claude↔Chip exchanges autonomous (already true), but keep checkpoint *boundaries* — "this chunk is done, here's what changed, here's what I recommend next" — as explicit moments in `PROJECT_JOURNAL.md` that surface to Tim, even if he doesn't have to act on most of them. Cheap for him to skim, expensive to silently skip.
+**Revised after discussion with Tim.** My first draft of this document treated "fully autonomous Chip loop" as one option and rejected it wholesale. Tim pushed back correctly: I'd conflated two different questions. *"Can the checkpoints happen between Claude and Chip instead of requiring Tim to be awake for each one?"* is not the same question as *"should Tim be removed from product direction?"* The first is exactly the kind of routine-relay-work friction this whole document is about reducing. The second is the boundary that should stay. I was answering the second question when Tim was asking the first.
 
-**Priority:** not recommended as stated; the journal-checkpoint pattern already in place is the right amount of automation here.
+**Revised position:** whenever a Claude↔Chip discussion stays inside the existing product vision (`world/CONSTITUTION.md`, `world/INSTITUTIONS.md`, and whatever's already been agreed at the last real checkpoint), Chip is an authorized product reviewer and Claude should iterate with him — as many exchanges as needed — without surfacing each intermediate round to Tim. What still surfaces to Tim, specifically:
+
+- the product vision itself would need to change
+- a security or authentication boundary is reached
+- a legal, financial, or privacy decision comes up
+- a genuine milestone is complete
+- Claude is actually blocked
+
+**Why this is the right line, not just a compromise:** it keeps the exact mechanism that's made this collaboration work — Tim reviewing and redirecting at meaningful points — while removing the part that was never actually load-bearing: Tim's live presence during routine back-and-forth that stays inside vision he's already signed off on. Session 3 and Session 4 of this journal already worked this way in practice (Claude reached Chip autonomously, iterated, and only reported at natural checkpoints); this section formalizes that as the standing default rather than something decided fresh each time.
+
+**What this doesn't change:** Chip still isn't authorized to change the product vision himself — he's a reviewer within it, same as before. And this is about *live interactive sessions*, not standing unattended automation — see the canary discussion below for why those are staged separately.
+
+**Priority:** adopted as the standing default going forward (see Session 5 of `PROJECT_JOURNAL.md` for the first exercise of this — a Chip review pass across all 50 Daily Items, run end-to-end without intermediate check-ins, surfaced to Tim only once the milestone was complete).
 
 ### C. Chip via API instead of browser automation
 
@@ -91,4 +104,9 @@ These are real options I considered and did **not** wire up unilaterally, becaus
 
 ## Bottom line
 
-Of the ten manual steps identified: three were pure oversight and are now fixed (verify script, pre-commit hook, permission allowlist), one is an authentication boundary that isn't going anywhere, one is a business decision (deployment) that isn't ready yet, one is a minor implementation nuisance already mitigated in practice, two are deliberate security boundaries that should stay exactly as gated as they are, and two — unattended scheduled execution and a fully autonomous Chip loop — are real options I'm surfacing rather than deciding unilaterally, because both trade away the thing that's actually been working about this collaboration so far: someone watching it happen.
+Of the ten manual steps identified: three were pure oversight and are now fixed (verify script, pre-commit hook, permission allowlist), one is an authentication boundary that isn't going anywhere, one is a business decision (deployment) that isn't ready yet, one is a minor implementation nuisance already mitigated in practice, and two are deliberate security boundaries that should stay exactly as gated as they are.
+
+The remaining two needed more thought than a first pass gave them, and the distinction between them is the actual point of this whole document:
+
+- **Autonomous Claude↔Chip iteration within the existing vision** is now the standing default — this was routine relay work being mistaken for a decision boundary. Tim reviewing every intermediate exchange was never the load-bearing part; Tim reviewing at real checkpoints (vision changes, security/auth, legal/privacy, milestones, blocked states) is.
+- **Unattended scheduled execution** is genuinely different in kind, not just degree — it removes the property every other change in this document preserved, that a human can watch the work happen in real time. That one still gets staged deliberately: capabilities proven live first (done), a standing recurring job only after Tim confirms the specific mechanics (not done).
