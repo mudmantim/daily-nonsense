@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Daily Nonsense
 
-## Getting Started
+A Next.js app that reveals one absurd "document" per day from a fictional bureaucracy — see `world/README.md` for the full world bible (constitution, institution profiles, shared timeline, supporting artifacts) that every Daily Item is written against.
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
+git config core.hooksPath .githooks   # one-time, per clone - see below
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Development workflow
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run verify:fast   # lint + typecheck + test (fast; runs automatically on commit)
+npm run verify        # verify:fast + a full production build (run before a checkpoint/release)
+npm test               # just the content-consistency + rotation-logic test suite
+```
 
-## Learn More
+Committing runs `npm run verify:fast` automatically via a pre-commit hook. The hook lives in `.githooks/pre-commit` (tracked in git) rather than `.git/hooks/` (not tracked) so it travels with the repo — each clone needs to point git at it once with `git config core.hooksPath .githooks`, shown above.
 
-To learn more about Next.js, take a look at the following resources:
+See `PROJECT_JOURNAL.md` for a running log of engineering/product sessions, and `AUTONOMY.md` for what's automated in this workflow, what's deliberately still manual, and why.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `src/app/` — routes (today, `/yesterday`, `/random`, `/archive`)
+- `src/lib/content.ts` — the Daily Item pool, date-rotation logic, `DailyItem` schema
+- `src/lib/universes.ts` — institution metadata (gradient, masthead, bureaucratic detail)
+- `src/lib/timeline.ts` — canonical shared-event slugs (mirrors `world/TIMELINE.md`)
+- `world/` — the world bible: constitution, institution profiles, timeline, style guide, supporting artifacts
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Not yet deployed anywhere (no git remote configured). The usual path for a Next.js app like this is [Vercel](https://vercel.com/new) — see [Next.js deployment docs](https://nextjs.org/docs/app/building-your-application/deploying) when that decision gets made.

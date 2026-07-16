@@ -1,0 +1,11 @@
+#!/bin/sh
+# Runs the fast checks (lint, typecheck, test - not the full production
+# build, to keep commits quick) before every commit. This exists so a
+# broken commit is physically prevented rather than relying on whoever's
+# committing to remember to run checks first - see AUTONOMY.md, "manual
+# step: remembering to verify before committing."
+#
+# Tracked in .githooks/ (not .git/hooks/) so it travels with the repo -
+# enabled via `git config core.hooksPath .githooks`, see README.md.
+
+npm run verify:fast
