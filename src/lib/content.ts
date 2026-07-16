@@ -10,6 +10,15 @@ export interface DailyItem {
   title: string;
   body: string;
   rarity: "common" | "rare";
+  // Forward-looking fields per Chip's schema-prep request: no current entry
+  // sets these, and nothing renders them yet. They exist so that when real
+  // cross-universe worldbuilding content gets written, items can already
+  // reference each other ("every Committee decision that later appeared in
+  // Wildlife Reports") without another migration.
+  season?: string;
+  tags?: string[];
+  callbacks?: string[]; // ids of earlier DailyItems this one nods to
+  relatedDocuments?: string[]; // ids of DailyItems thematically linked to this one
 }
 
 export function shareTextFor(item: DailyItem): string {
