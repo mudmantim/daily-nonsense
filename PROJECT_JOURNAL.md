@@ -106,3 +106,39 @@ My own recommendation, if asked to pick one: **option 1 or 2** — the code and 
 **Ideas deferred:** none new beyond what's already tracked in `AUTONOMY.md`'s "proposed, not implemented" section (phased scheduled-run design, journal-checkpoint pattern as the deliberate alternative to a fully autonomous review loop).
 
 **Recommended next direction:** same three options as Session 3 (ship/soft-launch, a Chip voice-consistency pass, or the surfacing-the-lore product decision) still stand — this session was infrastructure, not new product surface area. If Tim specifically wants to pursue unattended scheduled execution, the phased design in `AUTONOMY.md` (read-only canary run first, then draft-not-commit, then full autonomy only once both have proven stable) is what I'd actually build, rather than going straight to full autonomy.
+
+---
+
+## Session 5 — Refining the autonomy boundary; the canary rehearsal (2026-07-16, continued)
+
+**Context:** Tim read `AUTONOMY.md` and pushed back on one specific point — correctly. He drew a distinction I'd missed: *"can the checkpoints happen between Claude and Chip instead of requiring Tim to be awake for each one?"* is a different question from *"should Tim be removed from product direction?"* I'd answered the second when he was asking the first. His actual ask: iterate with Chip as many times as needed while a discussion stays inside the existing product vision, and surface to Tim only when the vision would need to change, a security/auth boundary is hit, a legal/privacy/financial question comes up, a real milestone completes, or Claude is genuinely blocked.
+
+**Decision:** adopted this as the standing default (revised `AUTONOMY.md`'s Option B accordingly — see that file for the full reasoning). This is now how Claude↔Chip exchanges work going forward: freely, within vision, checkpointed at real boundaries rather than after every message.
+
+**Then:** Tim asked for the "resumable after sleep" canary to also prove out autonomous Chip communication specifically — not just repo-internal checks — and proposed proving the whole capability set (resume, inspect, review, journal, summarize, critique, communicate with Chip, stop safely) *live, without modifying the repository* before ever considering an actual unattended `CronCreate` job. Executed that rehearsal in this session:
+
+1. **Resume:** reconstructed state from this journal and the world bible (already in context this session, but this is the step an unattended session would do fresh).
+2. **Inspect:** ran `npm run verify` — clean.
+3. **Review:** reached Chip (autonomously, no intermediate check-in with Tim, per the revised default above) and requested a full Museum Test pass across all 50 Daily Items — a real, already-recommended piece of work (Session 3's "short Chip pass" recommendation), not a synthetic exercise. Sent the complete set (grouped by institution, format-tagged, rarity-marked) as plain text in the chat.
+4. **Critique received, in full:**
+   - **Overall: Museum Pass — PASS.** ~42 items are "museum pieces" as-is, ~8 would benefit from polish, 0 rejects (none depend on internet culture, memes, or animation to land).
+   - **Unprompted observation:** the 13 timeline events already function as "mythology, not just continuity" in Chip's read — flagged as the strongest thing to keep doing.
+   - **Five concrete polish suggestions:**
+     1. `deir-3` (the goose peer-review paper) — name the event institutionally ("the Goose Budget Session") rather than citing the year directly.
+     2. `deir-6` (12,000 doorknobs) — reads as slightly too "constructed joke"; reframe as "following an extensive survey..." rather than leading with the number.
+     3. `notices-4` / `clarifications-4` (streetlight has feelings) — the Office's non-response is funnier than the original notice; make the original notice colder/drier so the contrast does more work.
+     4. `lostfound-5` (motivational poster, "emotionally ambiguous") — offered two alternate directions ("Remaining optimistic" / "Recovering"), not necessarily better, just alternatives worth considering.
+     5. `bureau-6` (shopping carts, "...not coordinated. Probably.") — drop "Probably"; the Bureau doesn't speculate, that word is Department vocabulary bleeding into the wrong institution's voice.
+   - **Biggest opportunity flagged:** a full per-institution vocabulary "dialect," extending the four word-substitution rules already in `world/STYLE_GUIDE.md` into fuller sets — Department: concludes/observes/determines/findings indicate; Museum: historically underappreciated/accessioned/catalogued/preserved/curatorial review; Committee: motions/quorum/subcommittee/minutes/adjourned; Office: logged/received/clarified/declined/recorded; Wildlife: observed/tracked/assessed/reported/confirmed by observers.
+   - **Deferred idea (Chip's, explicitly "later"):** institutional *disagreements* — e.g. the Department concludes socks are promoted, the Lost & Found Authority declines to endorse that conclusion, the Committee forms a review panel, nobody's declared right — as a way to make cross-institution continuity feel alive rather than just decorative.
+   - **Important caution:** callbacks/continuity should never become "homework" — a first-time reader should never need backstory to enjoy an item; callbacks should reward a second visit, never gate the first. Worth keeping in mind before adding more `tags`/`relatedDocuments` density.
+   - **Nominated "top museum pieces"** (his gold-standard examples): `committee-1`, `museum-1`, `wildlife-2`, `deir-2`, `clarifications-5`, `bureau-4`.
+5. **Stopped safely:** confirmed with Chip that nothing would be acted on without Tim seeing the notes first, closed the loop, wrote this entry. **No file under `src/` or `world/` was touched in this session as part of the rehearsal itself** — the polish suggestions above are recommendations for a future session, not applied changes.
+
+**Why this matters beyond the specific feedback:** it's a clean, complete proof that the capability set Tim asked the canary to demonstrate actually works — autonomous resume/inspect/review/journal/critique/communicate-with-Chip/stop-safely, entirely inside a live interactive session, with zero repository modification. What's still genuinely unproven is the *unattended, scheduled* version of the same loop (nobody watching at execution time) — that remains gated on Tim confirming the specific `CronCreate` mechanics, per `AUTONOMY.md`.
+
+**Ideas deferred:** everything in Chip's review above is a recommendation, not a decision — whether/how to apply the five polish notes and the vocabulary dialect expansion is Tim's call (or a future Claude↔Chip round explicitly authorized to write, not just review).
+
+**Recommended next direction:** two clear options, both small and well-scoped —
+1. Apply Chip's five polish edits + the vocabulary dialect table to `content.ts`/`STYLE_GUIDE.md` in a short follow-up session (this is squarely "routine work within existing vision" per the new default — doesn't need a fresh Tim check-in to execute, just his awareness that it's happening, which this journal entry provides).
+2. Or: if Tim wants to see the *unattended* version of this same loop proven out next, the next concrete step is agreeing the specific `CronCreate` schedule/trigger/scope for Step 2 in `AUTONOMY.md`'s staging note, not building it by default.
