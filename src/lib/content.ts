@@ -54,7 +54,7 @@ const CONTENT_POOL: DailyItem[] = [
     universe: "deir",
     format: "Scientific Paper",
     title: "A Methodological Review of Non-Objecting Waterfowl",
-    body: "The Department has concluded its review of the goose present at the 1996 Committee budget vote. Its decision-making process was found methodologically sound. It did not object.",
+    body: "The Department has concluded its review of the Goose Budget Session of 1996. The goose's decision-making process was found methodologically sound. It did not object.",
     rarity: "common",
     tags: ["goose-incident"],
     relatedDocuments: ["committee-3", "wildlife-3"],
@@ -84,7 +84,7 @@ const CONTENT_POOL: DailyItem[] = [
     universe: "deir",
     format: "Research Finding",
     title: "Finding",
-    body: "A study of 12,000 doorknobs concluded that none of them wished to comment further.",
+    body: "Following an extensive survey, the Department has concluded that doorknobs, as a class, decline further comment.",
     rarity: "common",
   },
   {
@@ -316,7 +316,7 @@ const CONTENT_POOL: DailyItem[] = [
     universe: "lostfound",
     format: "Item Recovered",
     title: "Found",
-    body: "One motivational poster reading YOU CAN DO IT, recovered face-down. Condition: emotionally ambiguous.",
+    body: "One motivational poster reading YOU CAN DO IT, recovered face-down. Condition: remaining optimistic.",
     rarity: "common",
   },
   {
@@ -361,7 +361,7 @@ const CONTENT_POOL: DailyItem[] = [
     universe: "notices",
     format: "Public Notice",
     title: "Public Notice",
-    body: "Residents are reminded that the streetlight on Elm has feelings, and it heard what you said about it.",
+    body: "Residents are reminded that the streetlight on Elm Street has been made aware of recent remarks concerning it.",
     rarity: "common",
   },
   {
@@ -434,7 +434,7 @@ const CONTENT_POOL: DailyItem[] = [
     universe: "bureau",
     format: "De-escalation Notice",
     title: "De-escalation Notice",
-    body: "The situation involving seventeen shopping carts gathered at the edge of the parking lot has been de-escalated. Their gathering was not coordinated. Probably.",
+    body: "The situation involving seventeen shopping carts gathered at the edge of the parking lot has been de-escalated to baseline. No classification of intent has been made.",
     rarity: "common",
   },
 
@@ -474,7 +474,7 @@ const CONTENT_POOL: DailyItem[] = [
     universe: "clarifications",
     format: "Statement of Non-Clarification",
     title: "Statement of Non-Clarification",
-    body: "Regarding whether the streetlight on Elm Street has feelings: this office is aware of the notice. No further comment will be issued.",
+    body: "Regarding the streetlight on Elm Street: this office is aware of the notice. No further comment will be issued.",
     rarity: "common",
     relatedDocuments: ["notices-4"],
   },

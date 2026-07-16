@@ -23,3 +23,4 @@
 - Every event above should resurface at least once more across a different institution before a brand-new event is introduced. The world should feel finite and cross-referenced, not infinite and disposable.
 - New events get added here first, with a slug, before they appear in any Daily Item's `tags`.
 - Nothing on this list is ever resolved on-page. "Ongoing," "pending," and "unconfirmed" are permanent states, not placeholders.
+- **Callbacks reward, never gate (Chip, Session 5).** A reader who has never seen `goose-incident` before should still find `deir-3` complete and funny on its own. Cross-references are a bonus for a second visit, not a comprehension requirement for the first. If an item only works when you already know the referenced event, it's failed the Museum Test regardless of how good the continuity is.

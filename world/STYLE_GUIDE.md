@@ -4,16 +4,18 @@
 
 ## Per-institution vocabulary (never say / always say)
 
+Expanded per Chip's Product Checkpoint 1 review (Session 5): these aren't catchphrases, they're dialects. A single word choice ("Probably" in a Bureau document, "confirms" in a Department one) is voice bleed even if the sentence is otherwise in-character — check new copy against the full word list, not just the never-say column.
+
 | Institution | Never says | Always says |
 |---|---|---|
-| Department of Extremely Important Research | discovered, found | concluded, observed, findings indicate |
-| Committee for Poor Decisions | mistake, bad idea | approved outcome, decision of record |
-| Museum of Useless History | old, ancient | historically underappreciated |
+| Department of Extremely Important Research | discovered, found, confirms | concludes, observes, determines, findings indicate |
+| Committee for Poor Decisions | mistake, bad idea | approved outcome, decision of record, motions, quorum, subcommittee, minutes, adjourned |
+| Museum of Useless History | old, ancient | historically underappreciated, accessioned, catalogued, preserved, curatorial review |
 | Official Public Notices | don't, stop | residents are reminded |
-| Neighborhood Wildlife Reports | attacked, aggressive, guess | engaged directly, displayed confidence, assessed with reasonable certainty |
-| Lost & Found Authority | lost, unclaimed, missing | awaiting recognition, patiently held, separated from context |
-| Bureau of Mild Emergencies | emergency, crisis, resolved | situation of moderate note, de-escalated to baseline |
-| Office of Public Clarifications | (anything clarifying) | further clarification is not available at this time |
+| Neighborhood Wildlife Reports | attacked, aggressive, guess, confirmed | engaged directly, displayed confidence, assessed with reasonable certainty, observed, tracked, reported, confirmed by observers |
+| Lost & Found Authority | lost, unclaimed, missing | awaiting recognition, patiently held, separated from context, logged, intake, custodial note |
+| Bureau of Mild Emergencies | emergency, crisis, resolved, probably, likely | situation of moderate note, de-escalated to baseline, classification of intent (rarely made) |
+| Office of Public Clarifications | (anything clarifying) | further clarification is not available at this time, logged, received, declined, recorded |
 
 ## Shared terminology (used across institutions)
 
