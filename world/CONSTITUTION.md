@@ -26,6 +26,18 @@ New institutions, historical events, and running references should connect to wh
 
 No institution ever contextualizes its own absurdity, apologizes for its scope, or acknowledges that its mandate is trivial. Confusion is the reader's problem to enjoy, not the institution's problem to solve. See `STYLE_GUIDE.md` for how each institution avoids saying the thing directly.
 
+### Never answer these (Chip, Editorial Desk Vol. 1, Session D)
+
+A standing, named list — not because these are the only unanswerable questions, but because these specific ones are already live enough in the archive that a future contributor might be tempted to resolve them "for continuity." Don't. The temptation to answer is the biggest risk to the whole premise.
+
+- What's in the Jointly-Held Filing Cabinet?
+- Why was Tuesday extended (twice)?
+- Why was the goose at the 1996 budget vote allowed to remain?
+- Why does the Office of Public Clarifications refuse to clarify, as a matter of policy?
+- Who or what actually founded the Bureau of Mild Emergencies (and why the same year as the Office)?
+
+If a future Daily Item seems to require answering one of these to make sense, the item is wrong — not the silence.
+
 ## What Governs This World
 
 - **The Department of Extremely Important Research** — produces findings.
