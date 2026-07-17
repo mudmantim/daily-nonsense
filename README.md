@@ -34,4 +34,13 @@ See `PROJECT_JOURNAL.md` for a running log of engineering/product sessions, and 
 
 ## Deploy
 
-Not yet deployed anywhere (no git remote configured). The usual path for a Next.js app like this is [Vercel](https://vercel.com/new) — see [Next.js deployment docs](https://nextjs.org/docs/app/building-your-application/deploying) when that decision gets made.
+Live at **https://daily-nonsense.vercel.app** (Vercel project `daily-nonsense`, team `mudmantim-projects`, deployed 2026-07-16).
+
+Deployed via the Vercel MCP `deploy_to_vercel` tool, which does a one-off file-tree snapshot deploy rather than a GitHub-linked import — the tool available in that session had no `gitRepository` parameter, even though Vercel's own REST API supports one. Two consequences worth knowing:
+
+- **Not git-linked.** Pushes to `master` do not auto-deploy. To get continuous deployment, connect the existing GitHub repo (`mudmantim/daily-nonsense`) to the Vercel project from the dashboard (Project → Settings → Git → Connect), or redeploy manually the same way this deploy was done.
+- **No project env vars were set** (the deploy tool doesn't expose that either). `NEXT_PUBLIC_SITE_URL` is hardcoded as a fallback default in `src/app/layout.tsx`'s `metadataBase` instead, pointing at the real production URL above. If a custom domain is ever added, update that fallback (or, better, set `NEXT_PUBLIC_SITE_URL` as a real project env var once the project is git-linked and dashboard access is easy).
+
+`favicon.ico` was intentionally left out of that snapshot deploy (binary file, not worth the payload size for a one-off deploy) — `/favicon.ico` 404s, but the actual app icon (`/icon.svg`, referenced via `<link rel="icon">` and the manifest) works normally. Low-priority cleanup: include it next time the project is redeployed or git-linked.
+
+No custom domain is configured yet. Preferred future domain: `daily.mudmantimsapps.com`.

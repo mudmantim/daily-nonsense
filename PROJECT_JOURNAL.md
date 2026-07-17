@@ -199,3 +199,32 @@ My own recommendation, if asked to pick one: **option 1 or 2** — the code and 
 3. **The two deferred world-bible sections** (Jurisdiction, Known/Unknown) if there's appetite to strengthen the bible before more content rather than after.
 
 If forced to pick: ship it. Every gate this product was built against (Museum Test, editorial review, product audit, automated consistency checks) has now been passed.
+
+---
+
+## Session 8 — Deployed to Vercel (2026-07-16, continued)
+
+**Brief:** Tim's recommendation from Session 7 ("ship it") became an actual instruction — deploy end to end with minimal input from him, using the existing GitHub repo, reviewing (not blindly accepting) deployment settings, setting `NEXT_PUBLIC_SITE_URL` correctly, and stopping only for new auth approvals, security-sensitive permissions, paid-plan requirements, risk of overwriting an existing resource, or a product/domain-strategy decision.
+
+**What happened, in order:**
+
+1. **Verification.** `npm run verify` (lint, typecheck, 8/8 tests, production build) clean before touching anything.
+2. **Discovered a real tooling gap and surfaced it rather than working around it silently.** The brief asked to "import the repository into Vercel" and treat "production branch" as a reviewable setting — implying a git-linked, continuously-deploying project. The Vercel MCP connector available this session (`deploy_to_vercel`) only does one-off file-tree snapshot deploys — no `gitRepository` parameter, even though Vercel's own REST API supports one (confirmed via `search_vercel_documentation`). No env-var-setting tool was available either. Decided to proceed with the snapshot deploy (it's the only mechanism available, and still gets a real, working production site live) while being explicit in-repo about what that mechanism does and doesn't do, rather than either stalling on a back-and-forth or quietly claiming git integration that doesn't exist.
+3. **Worked around the missing env-var tool.** `NEXT_PUBLIC_SITE_URL` can't be set as a real Vercel project env var without that tool, but `metadataBase` in `layout.tsx` is evaluated at build time from a static `metadata` export, so it needs a correct value regardless. Hardcoded the production URL as the fallback default instead (`process.env.NEXT_PUBLIC_SITE_URL ?? "https://daily-nonsense.vercel.app"` — env var still wins if ever set for real).
+4. **First deploy, and a wrong prediction caught and fixed.** Predicted the production domain would be the bare `daily-nonsense.vercel.app` before deploying — wrong; team-scoped Vercel projects (this one lives under the `mudmantim-projects` team) get `<project>-<team-slug>.vercel.app` by default. Caught via `get_deployment` against the real deployment record rather than assuming, corrected the `metadataBase` fallback, redeployed. On the second deploy, Vercel *also* granted the bare `daily-nonsense.vercel.app` alias (available, so given out alongside the team-scoped one) — matches Tim's stated naming preference more closely, so that became the canonical URL, confirmed live before finalizing.
+5. **Deliberately left two things out of the snapshot payload**, both logged rather than silently done: `package-lock.json` (250KB; `package.json` version ranges resolve fine for a one-off build) and `favicon.ico` (binary, ~34KB as base64; the actual app icon `/icon.svg` is what's referenced in metadata/manifest and works normally — `/favicon.ico` itself 404s, a cosmetic gap only).
+6. **Full live verification**, not just "the build succeeded": homepage (200, correct today's item, correct OG/Twitter meta pointing at the real domain), `/yesterday` (200, correct expired-item copy and correct prior day's item), `/random` (200, fresh item each load), `/archive` (200, all 50 items render), the dynamic `/opengraph-image` route (200, valid PNG), `/manifest.json` and `/icon.svg` (200). Checked `get_runtime_errors` — none in the deployment window.
+
+**Live at:** `https://daily-nonsense.vercel.app` — Vercel project `daily-nonsense`, team `mudmantim-projects`, production branch not applicable (not git-linked; see below), deployed 2026-07-16.
+
+**Known, documented gaps (not blockers, but real):**
+- **Not git-linked.** This is a snapshot deploy, not a GitHub-connected project — pushing to `master` does not auto-deploy. Closing this needs either Tim connecting the existing repo (`mudmantim/daily-nonsense`) via the Vercel dashboard (Settings → Git → Connect, a few clicks, no rebuild required), or a future session with a tool that exposes `gitRepository` on project creation.
+- **No real Vercel env vars set** — `NEXT_PUBLIC_SITE_URL` lives as a code fallback instead, per point 3 above. Fine as-is; would be worth moving to a real env var once the project is git-linked and dashboard access is routine.
+- **`/favicon.ico` 404s** — cosmetic only, the actual icon works. Worth including next time the project is redeployed or git-linked (trivial to add then; wasn't worth the context cost of a ~34KB base64 payload for this one-off deploy).
+- **Preferred future custom domain** (not configured, by design per Tim's brief): `daily.mudmantimsapps.com`.
+
+**Verification performed:** `npm run verify` before deploying; `npm run verify:fast` after each of the three `layout.tsx` edits (initial fallback, team-scope correction, bare-domain correction); full live-site checklist above via `web_fetch_vercel_url` and `get_runtime_errors` against the actual production deployment, not just the build log.
+
+**Ideas deferred:** none new this session — this was infrastructure, not product work. Everything from Session 7's "recommended next direction" (write the next issue, the two deferred world-bible sections) still stands, now with a live product to point people at.
+
+**Recommended next direction:** The product is live. Two natural next steps, neither urgent: (1) git-link the Vercel project so future work ships on push instead of needing another manual deploy — a Tim-side dashboard click, or a future session with better tooling; (2) Chip's Session 7 recommendation to write the next *issue* of content, now that there's a real URL to eventually point readers at.

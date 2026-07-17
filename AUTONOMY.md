@@ -10,7 +10,7 @@ Written in response to a direct brief: reduce unnecessary human involvement in t
 4. Before this session, verification meant four separate manual commands (`npx tsc --noEmit`, `npx eslint .`, and, as of a few sessions ago, `npm test`) plus, until today, `npm run build` had *never actually been run* — only `next dev` had been checked.
 5. Commits happened inside the interactive session, one at a time, with no automatic pre-flight check.
 6. Nothing runs unless a session is open on Tim's machine. Closing the laptop stops all work.
-7. There is no deployment pipeline — no git remote, no hosting configured.
+7. Deployed (Session 8) to Vercel via a file-tree snapshot, not a git-linked pipeline — pushes to the GitHub remote (`mudmantim/daily-nonsense`) don't auto-deploy yet; see row 10 below.
 
 ## Manual steps inventory
 
@@ -25,7 +25,7 @@ Written in response to a direct brief: reduce unnecessary human involvement in t
 | 7 | Tim's ChatGPT session/authentication has to exist for Chip interactions to work | It's literally his personal account; browser automation rides on his existing login, by design | No, not without a different integration | N/A — this is authentication, not friction | If Chip's involvement becomes a bottleneck, the alternative is an OpenAI API integration with a key Tim provisions himself — a materially different design (a bot, not "Tim's ChatGPT persona") | Tim's call, not implemented |
 | 8 | Nothing runs while the laptop is closed/off | Claude Code sessions today are tied to an open terminal on Tim's machine | Yes, via scheduled/background cloud execution (the platform's `ScheduleWakeup`/`CronCreate`/remote-isolation agent features) | **Medium-high** — an unattended job with repo write access and/or browser automation access, running with nobody watching, is a materially different risk profile than an interactive session Tim can see and interrupt live | See "Proposed, not implemented" below — a specific, bounded design, pending Tim's explicit go-ahead | Medium — valuable, but a real decision, not a default |
 | 9 | Tim reads Claude's summaries and decides whether to continue, redirect, or accept a checkpoint | This is product ownership, not incidental friction — it's the actual point of having a human in the loop | **Deliberately not removed** | High if removed: Claude would be setting its own product direction unsupervised, with nobody able to say "wait, that's not what I wanted" until much later | Keep, but make it cheap: `PROJECT_JOURNAL.md` lets Tim skim one file instead of re-reading a whole transcript to know what happened | **Keep — this is a feature, not a bug** |
-| 10 | Deployment / going live | No hosting configured; this is a business decision (money, public exposure), not an engineering one | N/A | N/A | Wire up Vercel when Tim explicitly decides to ship (see `README.md`) | Not started; not urgent per current recommendation |
+| 10 | Deployment / going live | **Done (Session 8, 2026-07-16)** — live at `daily-nonsense.vercel.app`. What's left isn't a business decision anymore, it's a tooling gap: the Vercel MCP connector available this session only does file-tree snapshot deploys, no git-linked project creation or env-var management | Git-linking is removable with the right tool/access; not automated yet | Low — snapshot deploys work, just don't auto-deploy on push | Connect the existing GitHub repo to the Vercel project via the dashboard (Settings → Git → Connect) for continuous deployment; move `NEXT_PUBLIC_SITE_URL` from a code fallback to a real project env var once that's routine | Low-medium — nice to have, not blocking |
 
 ## What I implemented this session
 
@@ -104,7 +104,7 @@ These are real options I considered and did **not** wire up unilaterally, becaus
 
 ## Bottom line
 
-Of the ten manual steps identified: three were pure oversight and are now fixed (verify script, pre-commit hook, permission allowlist), one is an authentication boundary that isn't going anywhere, one is a business decision (deployment) that isn't ready yet, one is a minor implementation nuisance already mitigated in practice, and two are deliberate security boundaries that should stay exactly as gated as they are.
+Of the ten manual steps identified: four were pure oversight and are now fixed (verify script, pre-commit hook, permission allowlist, deployment itself as of Session 8), one is an authentication boundary that isn't going anywhere, one is a minor implementation nuisance already mitigated in practice, and two are deliberate security boundaries that should stay exactly as gated as they are. Deployment's remaining gap (git-linking) is now a tooling-access question, not a business decision.
 
 The remaining two needed more thought than a first pass gave them, and the distinction between them is the actual point of this whole document:
 
