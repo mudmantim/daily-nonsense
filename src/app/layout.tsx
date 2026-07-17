@@ -26,10 +26,14 @@ export const metadata: Metadata = {
   description,
   manifest: "/manifest.json",
   icons: { icon: "/icon.svg" },
-  // Production domain: https://daily-nonsense.vercel.app. The env var
-  // takes precedence if set; the fallback covers builds where it isn't
-  // (deploys through this session's tooling can't set project env vars).
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://daily-nonsense.vercel.app"),
+  // Production domain: https://daily-nonsense-mudmantim-projects.vercel.app
+  // (team-scoped Vercel projects get a "<project>-<team-slug>.vercel.app"
+  // alias, not a bare "<project>.vercel.app" one). The env var takes
+  // precedence if set; the fallback covers builds where it isn't (deploys
+  // through this session's tooling can't set project env vars).
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://daily-nonsense-mudmantim-projects.vercel.app"
+  ),
   // Without these, a shared link renders bare in iMessage/Slack/Twitter -
   // no preview at all. The image itself is generated per-day from
   // today's actual item (see opengraph-image.tsx), not a static banner.
