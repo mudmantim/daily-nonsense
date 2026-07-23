@@ -33,6 +33,14 @@ export const metadata: Metadata = {
   // builds where it isn't (deploys through this session's tooling can't
   // set project env vars).
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://daily-nonsense.vercel.app"),
+  // Advertises the RSS feed to browsers and readers via
+  // <link rel="alternate" type="application/rss+xml">, resolved against
+  // metadataBase above.
+  alternates: {
+    types: {
+      "application/rss+xml": [{ url: "/rss.xml", title: "The Daily Nonsense" }],
+    },
+  },
   // Without these, a shared link renders bare in iMessage/Slack/Twitter -
   // no preview at all. The image itself is generated per-day from
   // today's actual item (see opengraph-image.tsx), not a static banner.

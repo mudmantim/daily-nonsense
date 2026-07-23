@@ -643,3 +643,20 @@ export function getRandomItem(): DailyItem {
 export function getAllItems(): DailyItem[] {
   return CONTENT_POOL;
 }
+
+// The most recent `count` days, newest first, clamped so it never reaches
+// before the epoch. Backs the RSS feed — a reader's "what did I miss."
+export function getRecentDays(
+  count: number,
+  now: Date = new Date()
+): Array<{ item: DailyItem; dayKey: string }> {
+  const todayIndex = daysSinceEpoch(now);
+  const days: Array<{ item: DailyItem; dayKey: string }> = [];
+  for (let i = 0; i < count; i++) {
+    const index = todayIndex - i;
+    if (index < 0) break;
+    const date = new Date(EPOCH_UTC + index * DAY_MS);
+    days.push({ item: getItemForDate(date), dayKey: getDayKey(date) });
+  }
+  return days;
+}

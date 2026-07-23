@@ -143,6 +143,12 @@ export default async function CalendarPage({
           >
             Archive
           </Link>
+          <a
+            href="/rss.xml"
+            className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
+          >
+            RSS
+          </a>
         </nav>
       </div>
     </div>
