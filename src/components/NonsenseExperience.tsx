@@ -319,6 +319,12 @@ export default function NonsenseExperience({
                   </Link>
                 )}
                 <Link
+                  href="/calendar"
+                  className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
+                >
+                  Calendar
+                </Link>
+                <Link
                   href="/archive"
                   className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
                 >

@@ -59,12 +59,20 @@ export default function Archive() {
           </section>
         ))}
 
-        <Link
-          href="/"
-          className="text-center text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
-        >
-          Back to today
-        </Link>
+        <nav className="flex flex-wrap items-center justify-center gap-5">
+          <Link
+            href="/"
+            className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
+          >
+            Back to today
+          </Link>
+          <Link
+            href="/calendar"
+            className="text-xs uppercase tracking-[0.2em] text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
+          >
+            Calendar
+          </Link>
+        </nav>
       </div>
     </div>
   );
