@@ -539,6 +539,89 @@ export function getDayKey(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
+// The first day the archive exists — nothing before this has an item, and
+// prev-day navigation stops here. Derived from the same EPOCH the rotation
+// uses, so the two can never drift apart.
+export const FIRST_DAY_KEY = getDayKey(new Date(EPOCH_UTC));
+
+const DAY_KEY_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+// Parse a "YYYY-MM-DD" string into a UTC Date, rejecting anything that
+// isn't a real calendar date (e.g. "2026-02-31" round-trips to March and
+// is refused). Returns null rather than throwing so callers can 404
+// cleanly on a garbage URL.
+export function parseDayKey(dayKey: string): Date | null {
+  if (!DAY_KEY_PATTERN.test(dayKey)) return null;
+  const date = new Date(`${dayKey}T00:00:00.000Z`);
+  if (Number.isNaN(date.getTime())) return null;
+  // Reject values that silently normalized (Feb 31 → Mar 3, month 13, etc).
+  if (getDayKey(date) !== dayKey) return null;
+  return date;
+}
+
+// Resolve a day-key to its item, enforcing the archive's bounds: nothing
+// before the epoch, and nothing in the future (the whole premise is "what's
+// true today" — tomorrow hasn't happened yet). Returns null for anything
+// out of range or malformed, which the route turns into a 404.
+export function getItemByDayKey(
+  dayKey: string,
+  now: Date = new Date()
+): { item: DailyItem; dayKey: string } | null {
+  const date = parseDayKey(dayKey);
+  if (!date) return null;
+  const index = daysSinceEpoch(date);
+  if (index < 0) return null;
+  if (index > daysSinceEpoch(now)) return null;
+  return { item: getItemForDate(date), dayKey };
+}
+
+function shiftDayKey(dayKey: string, deltaDays: number): string {
+  const date = new Date(`${dayKey}T00:00:00.000Z`);
+  date.setUTCDate(date.getUTCDate() + deltaDays);
+  return getDayKey(date);
+}
+
+// Previous/next day-keys for a given day, bounded by the archive's edges:
+// `prev` is null on the epoch, `next` is null on today (no browsing into
+// the future). Assumes `dayKey` is already a valid, in-range day.
+export function getAdjacentDayKeys(
+  dayKey: string,
+  now: Date = new Date()
+): { prev: string | null; next: string | null } {
+  const date = new Date(`${dayKey}T00:00:00.000Z`);
+  const index = daysSinceEpoch(date);
+  const todayIndex = daysSinceEpoch(now);
+  return {
+    prev: index <= 0 ? null : shiftDayKey(dayKey, -1),
+    next: index >= todayIndex ? null : shiftDayKey(dayKey, 1),
+  };
+}
+
+// Long-form, human-facing date ("Thursday, July 23, 2026"), rendered in UTC
+// so it matches the UTC day boundary the rotation is keyed on — a viewer in
+// a negative-offset timezone still sees the label for the day they're
+// actually being shown, not their local yesterday.
+export function formatDayKeyLong(dayKey: string): string {
+  const date = new Date(`${dayKey}T00:00:00.000Z`);
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
+// "Today" / "Yesterday" when applicable, otherwise null — lets a dated page
+// gently orient the reader without a second date calculation in the view.
+export function relativeDayLabel(dayKey: string, now: Date = new Date()): "Today" | "Yesterday" | null {
+  const index = daysSinceEpoch(new Date(`${dayKey}T00:00:00.000Z`));
+  const todayIndex = daysSinceEpoch(now);
+  if (index === todayIndex) return "Today";
+  if (index === todayIndex - 1) return "Yesterday";
+  return null;
+}
+
 // `now` is injectable (defaults to the real clock) so tests can pin a
 // date without monkeypatching the global Date object.
 export function getTodayItem(now: Date = new Date()): { item: DailyItem; dayKey: string } {

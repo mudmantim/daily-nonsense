@@ -19,12 +19,25 @@ import {
 interface Props {
   item: DailyItem;
   dayKey: string;
-  mode: "today" | "yesterday" | "random";
+  mode: "today" | "yesterday" | "random" | "day";
+  // Dated-browsing chrome (only supplied for the "today" and "day" modes):
+  // a human-facing date to anchor the reader, and prev/next day permalinks
+  // that stop at the archive's edges (null past them).
+  dateLabel?: string;
+  prevHref?: string | null;
+  nextHref?: string | null;
 }
 
 type Stage = "loading" | "revealed";
 
-export default function NonsenseExperience({ item, dayKey, mode }: Props) {
+export default function NonsenseExperience({
+  item,
+  dayKey,
+  mode,
+  dateLabel,
+  prevHref,
+  nextHref,
+}: Props) {
   const universe = UNIVERSES[item.universe];
   const reactionKey = `dn-reaction-${dayKey}`;
 
@@ -140,6 +153,12 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
                 </p>
               )}
 
+              {dateLabel && (mode === "day" || mode === "today") && (
+                <p className="text-[11px] uppercase tracking-[0.3em] text-white/50">
+                  {dateLabel}
+                </p>
+              )}
+
               {/* The institution is the hero: readers should register the
                   publisher before they register the joke. */}
               <div className="flex flex-col items-center gap-3 border-b border-white/15 pb-6">
@@ -237,7 +256,44 @@ export default function NonsenseExperience({ item, dayKey, mode }: Props) {
                 </div>
               </div>
 
-              <nav className="flex gap-5">
+              {(prevHref || nextHref) && (
+                <div className="flex w-full items-center justify-between gap-4 border-t border-white/15 pt-6">
+                  {prevHref ? (
+                    <Link
+                      href={prevHref}
+                      rel="prev"
+                      className="group flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/60 transition hover:text-white"
+                    >
+                      <span aria-hidden="true" className="transition group-hover:-translate-x-0.5">
+                        ←
+                      </span>
+                      Previous day
+                    </Link>
+                  ) : (
+                    <span className="text-xs uppercase tracking-[0.2em] text-white/20">
+                      Start of the archive
+                    </span>
+                  )}
+                  {nextHref ? (
+                    <Link
+                      href={nextHref}
+                      rel="next"
+                      className="group flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/60 transition hover:text-white"
+                    >
+                      Next day
+                      <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
+                        →
+                      </span>
+                    </Link>
+                  ) : (
+                    <span className="text-xs uppercase tracking-[0.2em] text-white/20">
+                      Today
+                    </span>
+                  )}
+                </div>
+              )}
+
+              <nav className="flex flex-wrap items-center justify-center gap-5">
                 {mode !== "today" && (
                   <Link
                     href="/"

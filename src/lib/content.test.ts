@@ -1,6 +1,16 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { getAllItems, getItemForDate, getYesterdayItem, getDayKey } from "./content";
+import {
+  getAllItems,
+  getItemForDate,
+  getYesterdayItem,
+  getDayKey,
+  parseDayKey,
+  getItemByDayKey,
+  getAdjacentDayKeys,
+  relativeDayLabel,
+  FIRST_DAY_KEY,
+} from "./content";
 import { UNIVERSES } from "./universes";
 import { TIMELINE_SLUGS } from "./timeline";
 
@@ -105,4 +115,66 @@ test("yesterday is null on the epoch itself, and resolves the day before once pa
 test("getDayKey produces a stable ISO date string", () => {
   const d = new Date(Date.UTC(2026, 6, 16));
   assert.equal(getDayKey(d), "2026-07-16");
+});
+
+// ---- Dated permalinks + previous/next navigation ----
+
+test("FIRST_DAY_KEY is the epoch day", () => {
+  assert.equal(FIRST_DAY_KEY, "2026-01-01");
+});
+
+test("parseDayKey accepts real dates and rejects malformed or impossible ones", () => {
+  assert.ok(parseDayKey("2026-07-23"));
+  assert.equal(parseDayKey("2026-7-3"), null, "requires zero-padding");
+  assert.equal(parseDayKey("not-a-date"), null);
+  assert.equal(parseDayKey("2026-13-01"), null, "month 13 is not real");
+  assert.equal(parseDayKey("2026-02-31"), null, "Feb 31 must not silently roll into March");
+  assert.equal(parseDayKey("2026-07-23T00:00:00Z"), null, "no extra time component");
+});
+
+test("getItemByDayKey enforces the archive bounds", () => {
+  const now = new Date(Date.UTC(2026, 6, 23)); // 2026-07-23
+
+  // In range: resolves to the same item the date-based rotation would.
+  const onDay = getItemByDayKey("2026-04-12", now);
+  assert.ok(onDay);
+  assert.equal(onDay.dayKey, "2026-04-12");
+  assert.equal(onDay.item.id, getItemForDate(new Date(Date.UTC(2026, 3, 12))).id);
+
+  // Today itself is allowed.
+  assert.ok(getItemByDayKey("2026-07-23", now));
+
+  // Before the epoch and in the future are both refused.
+  assert.equal(getItemByDayKey("2025-12-31", now), null, "before the epoch");
+  assert.equal(getItemByDayKey("2026-07-24", now), null, "tomorrow hasn't happened");
+  assert.equal(getItemByDayKey("garbage", now), null);
+});
+
+test("getAdjacentDayKeys stops at the epoch and at today", () => {
+  const now = new Date(Date.UTC(2026, 6, 23)); // today = 2026-07-23
+
+  const middle = getAdjacentDayKeys("2026-04-12", now);
+  assert.equal(middle.prev, "2026-04-11");
+  assert.equal(middle.next, "2026-04-13");
+
+  const firstDay = getAdjacentDayKeys("2026-01-01", now);
+  assert.equal(firstDay.prev, null, "no day before the epoch");
+  assert.equal(firstDay.next, "2026-01-02");
+
+  const today = getAdjacentDayKeys("2026-07-23", now);
+  assert.equal(today.prev, "2026-07-22");
+  assert.equal(today.next, null, "no browsing into the future");
+});
+
+test("getAdjacentDayKeys crosses month and year boundaries correctly", () => {
+  const now = new Date(Date.UTC(2026, 6, 23));
+  assert.equal(getAdjacentDayKeys("2026-03-01", now).prev, "2026-02-28");
+  assert.equal(getAdjacentDayKeys("2026-01-31", now).next, "2026-02-01");
+});
+
+test("relativeDayLabel names today and yesterday only", () => {
+  const now = new Date(Date.UTC(2026, 6, 23));
+  assert.equal(relativeDayLabel("2026-07-23", now), "Today");
+  assert.equal(relativeDayLabel("2026-07-22", now), "Yesterday");
+  assert.equal(relativeDayLabel("2026-07-21", now), null);
 });
