@@ -71,7 +71,20 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        {/* One quiet outward link back to the parent site — the app's first
+            element that points off-site, kept deliberately low-emphasis so it
+            doesn't fight the restrained aesthetic. */}
+        <footer className="bg-zinc-950 py-6 text-center">
+          <a
+            href="https://mudmantimsapps.com"
+            className="text-[10px] uppercase tracking-[0.25em] text-white/30 underline-offset-4 transition hover:text-white/60 hover:underline"
+          >
+            Part of mudmantimsapps.com
+          </a>
+        </footer>
+      </body>
     </html>
   );
 }
