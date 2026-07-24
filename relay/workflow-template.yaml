@@ -1,0 +1,62 @@
+# implement-github-issue workflow template
+#
+# This file is a Relay-authored *candidate* -- opened for review via
+# Live Validation #004 to exercise the WorkflowProposal review-PR
+# mechanics (DECISIONS.md ADR-0018) against a real repository for the
+# first time. It is NOT a proposed behavioral change: this candidate
+# compiles to the exact same stage/step structure as the Template
+# already bound to this ProjectWorkflow (v4, id 221f784d-c8ac-4610-
+# 9e57-403267248cbb). See the opening pull request body for the full
+# validation context. Relay may draft; Relay may never adopt -- see
+# DECISIONS.md ADR-0018 -- adopting this (or any) candidate always
+# requires a separate, explicit rebindProjectWorkflow call a Human
+# initiates directly, never automatic merge-triggered adoption.
+name: implement-github-issue
+version: 5
+
+stages:
+  - name: idea
+    steps:
+      - id: draft-plan
+        kind: work
+        capability: planning
+        inputs:
+          - goal.title
+          - goal.description
+
+      - id: plan-approval
+        kind: gate
+        after: draft-plan
+
+  - name: implementation
+    steps:
+      - id: implement
+        kind: work
+        capability: implementation
+        after: plan-approval
+        inputs:
+          - draft-plan.output
+
+      - id: materialize-change
+        kind: work
+        systemAction: github.materialize-repository-change
+        after: implement
+
+      - id: code-review
+        kind: work
+        capability: code-review
+        after: materialize-change
+        inputs:
+          - materialize-change.output
+
+      - id: open-pr
+        kind: work
+        systemAction: github.open-pr
+        after: code-review
+
+  - name: release
+    steps:
+      - id: merge-approval
+        kind: gate
+        after: open-pr
+        onApproveAction: github.merge-pr
