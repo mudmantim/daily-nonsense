@@ -268,3 +268,10 @@ Pushed commit `4977673` and got a definitive positive result within 25 seconds: 
 **Bonus side effect:** since this deployment pulled the actual git checkout rather than the Session 8 snapshot's hand-picked file list, `favicon.ico` is included automatically — the cosmetic 404 gap noted in Session 8 is resolved without any further action.
 
 **The deployment pipeline objective is now genuinely complete.** Pushes to `master` deploy automatically; nothing about this is simulated or assumed. The four rounds of back-and-forth are worth remembering as a pattern (see the standing note added to memory): "connected" can mean three different, non-equivalent things — an account-level GitHub↔Vercel login link, a GitHub App's repository-access scope, and a specific project's own Connect-Git-Repository action — and only the last one actually creates deploys. Checking the real state directly (GitHub's status/check-run/deployment APIs, then the literal Vercel settings page via browser) resolved in two steps what four rounds of asking "did you check X" could not.
+
+
+---
+
+## Session 10 — Relay Live Validation #006 (2026-07-25)
+
+Relay's proposed_edit artifact model (GitHub Issue #130 / ADR-0022) was validated end to end against this file: a change was proposed, reviewed, and applied as a real edit to PROJECT_JOURNAL.md, confirming the artifact pipeline works on live repository content.
