@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,13 +27,10 @@ export const metadata: Metadata = {
   description,
   manifest: "/manifest.json",
   icons: { icon: "/icon.svg" },
-  // Production domain: https://daily-nonsense.vercel.app (confirmed via
-  // the live deployment record - Vercel also grants the bare
-  // "<project>.vercel.app" alias alongside the team-scoped one when it's
-  // available). The env var takes precedence if set; the fallback covers
-  // builds where it isn't (deploys through this session's tooling can't
-  // set project env vars).
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://daily-nonsense.vercel.app"),
+  // One canonical origin for metadata, RSS and /api/today: src/lib/site.ts
+  // (NEXT_PUBLIC_SITE_URL when set, else the Vercel URL). Keeping it in one
+  // place makes the custom-domain cutover a single change.
+  metadataBase: new URL(SITE_URL),
   // Advertises the RSS feed to browsers and readers via
   // <link rel="alternate" type="application/rss+xml">, resolved against
   // metadataBase above.

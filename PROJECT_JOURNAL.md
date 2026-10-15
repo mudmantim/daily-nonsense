@@ -268,3 +268,21 @@ Pushed commit `4977673` and got a definitive positive result within 25 seconds: 
 **Bonus side effect:** since this deployment pulled the actual git checkout rather than the Session 8 snapshot's hand-picked file list, `favicon.ico` is included automatically — the cosmetic 404 gap noted in Session 8 is resolved without any further action.
 
 **The deployment pipeline objective is now genuinely complete.** Pushes to `master` deploy automatically; nothing about this is simulated or assumed. The four rounds of back-and-forth are worth remembering as a pattern (see the standing note added to memory): "connected" can mean three different, non-equivalent things — an account-level GitHub↔Vercel login link, a GitHub App's repository-access scope, and a specific project's own Connect-Git-Repository action — and only the last one actually creates deploys. Checking the real state directly (GitHub's status/check-run/deployment APIs, then the literal Vercel settings page via browser) resolved in two steps what four rounds of asking "did you check X" could not.
+
+## Session 10 — v1.0 closeout (2026-10-15, Mad Lab campaign agent, isolated clone `closeout/v1.0`)
+
+**Context:** the owner's app-completion campaign picked Daily Nonsense as the next target after Password Generator Pro: live, no user data, no money, clean tree. Work happens in an isolated clone with pushing disabled; merging and pushing (which deploys) stay the owner's.
+
+**Since Session 9 (shipped 2026-07-23, never journaled):** dated permalinks with previous/next (`6f02bdb`), calendar browsing by month (`10b61e8`), an RSS 2.0 feed (`92b3c59`), the `/api/today` JSON endpoint plus an outbound link to mudmantimsapps.com (`d7dece7`). The Session 9 "next direction" option (1) was therefore built.
+
+**Verified:** `npm run verify` with lint, typecheck and 30/30 tests offline; `next build` green (it needs network only for `next/font`). The live site wasn't contacted.
+
+**Changed (no user-visible behaviour change):**
+- a GitHub Actions `verify` workflow;
+- `layout.tsx`'s `metadataBase` now uses `SITE_URL` from `src/lib/site.ts`, so the custom-domain cutover is a single change. The rendered RSS and OG URLs were checked identical;
+- README route list, CI and env-var notes corrected; `AUTONOMY.md` item 7 marked superseded.
+
+**Measured:** the rotation has **50 items and a 50-day period**, and 5 cycles are complete. Decision memo in `docs/CONTENT_ROTATION_MEMO.md` (recommended: accept for v1.0; reshuffle per cycle with past dates frozen, or new issues, for v1.1).
+
+**Prepared:** `docs/DOMAIN_CUTOVER_CHECKLIST.md`, `docs/RELEASE_NOTES_v1.0.0.md` (the tag is proposed, pending owner sign-off).
+

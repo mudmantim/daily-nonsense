@@ -10,7 +10,7 @@ Written in response to a direct brief: reduce unnecessary human involvement in t
 4. Before this session, verification meant four separate manual commands (`npx tsc --noEmit`, `npx eslint .`, and, as of a few sessions ago, `npm test`) plus, until today, `npm run build` had *never actually been run* — only `next dev` had been checked.
 5. Commits happened inside the interactive session, one at a time, with no automatic pre-flight check.
 6. Nothing runs unless a session is open on Tim's machine. Closing the laptop stops all work.
-7. Deployed (Session 8) to Vercel via a file-tree snapshot, not a git-linked pipeline — pushes to the GitHub remote (`mudmantim/daily-nonsense`) don't auto-deploy yet; see row 10 below.
+7. Deployed (Session 8) to Vercel via a file-tree snapshot. *Superseded in Session 9: the project is now git-linked and pushes to `master` deploy automatically; see row 10 below.*
 
 ## Manual steps inventory
 

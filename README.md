@@ -26,11 +26,15 @@ See `PROJECT_JOURNAL.md` for a running log of engineering/product sessions, and 
 
 ## Project structure
 
-- `src/app/` — routes (today, `/yesterday`, `/random`, `/archive`)
+- `src/app/` — routes: today (`/`), `/yesterday`, `/random`, `/archive`, `/day/[date]` (permalinks with previous/next), `/calendar/[[...ym]]` (month browsing), `/rss.xml` (RSS 2.0), `/api/today` (JSON for the mudmantimsapps.com teaser), `/opengraph-image`
 - `src/lib/content.ts` — the Daily Item pool, date-rotation logic, `DailyItem` schema
 - `src/lib/universes.ts` — institution metadata (gradient, masthead, bureaucratic detail)
 - `src/lib/timeline.ts` — canonical shared-event slugs (mirrors `world/TIMELINE.md`)
 - `world/` — the world bible: constitution, institution profiles, timeline, style guide, supporting artifacts
+
+## Continuous integration
+
+`.github/workflows/verify.yml` runs `npm run verify` (lint, typecheck, tests, production build) on every push to `master` and on every pull request. It deploys nothing; Vercel does that on push.
 
 ## Deploy
 
@@ -39,7 +43,7 @@ Live at **https://daily-nonsense.vercel.app** (Vercel project `daily-nonsense`, 
 Deployed via the Vercel MCP `deploy_to_vercel` tool, which does a one-off file-tree snapshot deploy rather than a GitHub-linked import — the tool available in that session had no `gitRepository` parameter, even though Vercel's own REST API supports one. Two consequences worth knowing:
 
 - **Git-linked as of Session 9.** Pushes to `master` deploy automatically — verified with a real push producing a real deployment (`source: "git"`, build completed, live-checked). Getting here took four rounds of troubleshooting because "connected" can mean three different, non-equivalent things (an account-level GitHub↔Vercel login, a GitHub App's repository-access scope, and the project's own Connect-Git-Repository action) — only the last one actually enables deploys. Full history in `PROJECT_JOURNAL.md` Session 9.
-- `NEXT_PUBLIC_SITE_URL` is still a code fallback in `src/app/layout.tsx`'s `metadataBase` rather than a real project env var — low-priority cleanup now that dashboard access is routine.
+- `NEXT_PUBLIC_SITE_URL` is still a code fallback (`src/lib/site.ts`, used by `metadataBase`, the RSS feed and `/api/today`) rather than a real project env var. It must be set when the custom domain goes live (see `docs/DOMAIN_CUTOVER_CHECKLIST.md`).
 
 `favicon.ico` — resolved as a side effect of git-linking: the Session 8 snapshot deploy deliberately left it out (binary file, not worth the payload for a one-off deploy), but git-linked deploys pull the full repo, so it's included automatically now.
 
