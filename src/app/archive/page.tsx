@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { getAllItems } from "@/lib/content";
+import { getPublishedItems } from "@/lib/content";
 import { UNIVERSES, UniverseId } from "@/lib/universes";
 
+// Lists only what has already been published as of the request date, so
+// it can't be prerendered once at build time (it would freeze the list).
+export const dynamic = "force-dynamic";
+
 export default function Archive() {
-  const items = getAllItems();
+  const items = getPublishedItems();
   const byUniverse = (Object.keys(UNIVERSES) as UniverseId[]).map((id) => ({
     universe: UNIVERSES[id],
     items: items.filter((item) => item.universe === id),

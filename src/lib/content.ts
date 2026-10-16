@@ -1,4 +1,5 @@
 import { UniverseId } from "./universes";
+import { createSchedule, seededShuffle, DAY_MS } from "./rotation";
 
 export interface DailyItem {
   id: string;
@@ -25,13 +26,15 @@ export function shareTextFor(item: DailyItem): string {
   return `${item.body}\n\n— The Daily Nonsense`;
 }
 
-// The archive. Rotates in a fixed, deterministic order so every visitor
-// sees the same item on the same day without needing a backend.
+// Issue 1 (v1): the original 50 items. FROZEN. Every date before the v1.1
+// cutover is pinned to these by src/lib/history.test.ts (a golden fixture
+// plus a content hash), so they must never be edited, reordered or removed:
+// the v1 rotation shuffles exactly this array in exactly this order.
 // Copy and worldbuilding per /world/*.md (constitution, institution
 // profiles, shared timeline, style guide) - see TIMELINE.md for the `tags`
-// slugs referenced below. Claude owns the universe/format/schema these
-// entries are stored in.
-const CONTENT_POOL: DailyItem[] = [
+// slugs referenced below. New items go in a new issue file (see
+// content/BACKLOG.md), never in here.
+const V1_POOL: DailyItem[] = [
   // ---- The Department of Extremely Important Research ----
   {
     id: "deir-1",
@@ -498,41 +501,64 @@ const CONTENT_POOL: DailyItem[] = [
   },
 ];
 
-function mulberry32(seed: number) {
-  return function random() {
-    seed |= 0;
-    seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+// Every item that has ever been or will be scheduled: the frozen v1 pool,
+// then each later issue's items appended in issue order. Append-only.
+const CONTENT_POOL: DailyItem[] = [...V1_POOL];
 
-function seededShuffle<T>(arr: T[], seed: number): T[] {
-  const rand = mulberry32(seed);
-  const result = [...arr];
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [result[i], result[j]] = [result[j], result[i]];
-  }
-  return result;
-}
-
-// Fixed seed so the rotation order is stable across builds and servers.
-const ROTATION = seededShuffle(CONTENT_POOL, 20260101);
+const ITEMS_BY_ID = new Map(CONTENT_POOL.map((item) => [item.id, item]));
 
 const EPOCH_UTC = Date.UTC(2026, 0, 1);
-const DAY_MS = 86_400_000;
 
 function daysSinceEpoch(date: Date): number {
   const utc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
   return Math.floor((utc - EPOCH_UTC) / DAY_MS);
 }
 
+function dayIndexOf(dayKey: string): number {
+  return daysSinceEpoch(new Date(`${dayKey}T00:00:00.000Z`));
+}
+
+// v1: one fixed shuffle of the v1 pool, ROTATION[day mod 50]. Frozen
+// exactly as shipped (same pool order, same seed); it governs every date
+// before the first issue starts.
+const V1_ROTATION_SEED = 20260101;
+const V1_ROTATION = seededShuffle(V1_POOL, V1_ROTATION_SEED).map((item) => item.id);
+
+// v1.1 cutover: the first day the issue-based schedule applies. Every date
+// before it keeps the v1 document (pinned by history.test.ts). Chosen as a
+// fixed constant safely after the build date (2026-10-15) so that today and
+// every already-served date stay on v1; the days between now and the
+// cutover keep v1 behaviour too. If v1.1 is not deployed before this date,
+// move it (and ISSUES[0].startDayKey) later before deploying.
+export const CUTOVER_DAY_KEY = "2026-11-01";
+
+// No document runs twice within this many days from the cutover on.
+export const MIN_REPEAT_GAP_DAYS = 30;
+
+export interface IssueManifest {
+  id: string;
+  // First premiere day (UTC). Must be later than the date the issue is
+  // deployed, or already-served dates would change. See content/BACKLOG.md.
+  startDayKey: string;
+  seed: number;
+  premieres: readonly string[];
+  retire?: readonly string[];
+}
+
+// Append-only. Never edit an issue whose startDayKey has passed.
+export const ISSUES: readonly IssueManifest[] = [];
+
+const SCHEDULE = createSchedule({
+  v1Rotation: V1_ROTATION,
+  issues: ISSUES.map((issue) => ({ ...issue, startDay: dayIndexOf(issue.startDayKey) })),
+  minRepeatGap: MIN_REPEAT_GAP_DAYS,
+});
+
 export function getItemForDate(date: Date): DailyItem {
-  const dayIndex = daysSinceEpoch(date);
-  const idx = ((dayIndex % ROTATION.length) + ROTATION.length) % ROTATION.length;
-  return ROTATION[idx];
+  const id = SCHEDULE.idForDay(daysSinceEpoch(date));
+  const item = ITEMS_BY_ID.get(id);
+  if (!item) throw new Error(`schedule references unknown item "${id}"`);
+  return item;
 }
 
 export function getDayKey(date: Date): string {
@@ -635,11 +661,26 @@ export function getYesterdayItem(now: Date = new Date()): { item: DailyItem; day
   return { item: getItemForDate(yesterday), dayKey: getDayKey(yesterday) };
 }
 
-// Genuinely random (not date-seeded) — a fresh roll each time the page loads.
-export function getRandomItem(): DailyItem {
-  return CONTENT_POOL[Math.floor(Math.random() * CONTENT_POOL.length)];
+// Items whose first scheduled day is on or before `now` - the public
+// library. Items queued for a future premiere stay out of the archive and
+// /random until their day comes, so nothing is spoiled ahead of schedule.
+export function getPublishedItems(now: Date = new Date()): DailyItem[] {
+  const todayIndex = daysSinceEpoch(now);
+  return CONTENT_POOL.filter((item) => {
+    const first = SCHEDULE.firstDayOf(item.id);
+    return first !== null && first <= todayIndex;
+  });
 }
 
+// Genuinely random (not date-seeded) — a fresh roll each time the page
+// loads, drawn from what has already been published.
+export function getRandomItem(now: Date = new Date()): DailyItem {
+  const published = getPublishedItems(now);
+  return published[Math.floor(Math.random() * published.length)];
+}
+
+// Every item on file, including ones not yet premiered. For consistency
+// checks and tooling; public pages use getPublishedItems.
 export function getAllItems(): DailyItem[] {
   return CONTENT_POOL;
 }
