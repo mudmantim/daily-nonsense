@@ -17,3 +17,15 @@
 | C | **New issues** (more items, through the Editorial Desk process) | extends the pool; dates after the change shift unless items are appended in a new block | content work, not code | The project's own Session 9 stance is "no new content until Tim says so". Chip's standing recommendation (Session 7) was the next issue |
 
 **Recommendation:** A now (document it, in v1.0.0), then decide between B and C as v1.1. B, with past dates frozen, is the cheapest real improvement. C is the real product growth.
+
+---
+
+## Decision and implementation (v1.1, branch `content/v1.1`)
+
+**The owner chose option C**: grow the library with new, original issues, keep every historical date and URL, and make the intake sustainable. The implementation also takes B's per-cycle reshuffle for the long-term rotation, so repeats stop being a fixed 50-day loop.
+
+- **History frozen.** Every date before the **cutover, 2026-11-01**, runs the v1 algorithm exactly as shipped (same 50-item pool order, same seed 20260101). `src/lib/history.test.ts` pins all 304 dates from 2026-01-01 to 2026-10-31 against a committed golden fixture generated from the unmodified v1 code, cross-checks that fixture against an independent copy of the v1 algorithm, and hashes the 50 v1 items so their copy can't be edited.
+- **Why 2026-11-01.** It's a fixed constant (no build-time or clock dependence), 17 days after the build date of 2026-10-15. Today and every date already served stay on v1, and the days between now and the cutover keep v1 behaviour, so any deploy before the cutover changes nothing a reader has seen or could have seen. **If the merge slips past about 2026-10-29, move the cutover and Issue 2's start later before deploying.**
+- **From the cutover:** Issue 2's 29 new items premiere once each, in a fixed interleaved order (2026-11-01 to 2026-11-29). Then the full 79-item library rotates in cycles. Each cycle is a permutation, reshuffled with a seed derived from (issue seed 20261101, cycle number), and a deterministic boundary repair guarantees no item runs twice within 30 days. That's tested from the epoch through 2046.
+- **Future issues** append to `ISSUES` with a future start date. That provably changes no earlier date. Retirement works the same way (`retire` in a new issue). See `content/BACKLOG.md`.
+- **Archive and `/random`** now show only items already published as of the request date, so queued premieres aren't spoiled.

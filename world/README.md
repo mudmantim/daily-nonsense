@@ -39,6 +39,6 @@ Documents that make each institution feel like a real, dully-functioning workpla
 
 ## Where the actual content lives
 
-The 50 live Daily Items are in `src/lib/content.ts`, typed via `DailyItem` (universe, format, title, body, rarity, and the forward-looking `season`/`tags`/`callbacks`/`relatedDocuments` fields used to cross-reference the timeline and other items). Institution metadata (gradient, masthead, bureaucratic detail) lives in `src/lib/universes.ts`.
+The v1 Daily Items (50, frozen) are in `src/lib/content.ts`, and each later issue's items in its own file (`src/lib/contentIssue2.ts`, …); the intake process and idea backlog are in `content/BACKLOG.md`. All are typed via `DailyItem` (universe, format, title, body, rarity, and the forward-looking `season`/`tags`/`callbacks`/`relatedDocuments` fields used to cross-reference the timeline and other items). Institution metadata (gradient, masthead, bureaucratic detail) lives in `src/lib/universes.ts`.
 
 New Daily Items should be written *from* this world bible, not independently of it — pull a reference number from `FILING_SYSTEM.md`, a timeline event to nod to, or a rejected-proposal-style premise, rather than starting from a blank joke.

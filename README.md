@@ -18,6 +18,7 @@ Open [http://localhost:3000](http://localhost:3000).
 npm run verify:fast   # lint + typecheck + test (fast; runs automatically on commit)
 npm run verify        # verify:fast + a full production build (run before a checkpoint/release)
 npm test               # just the content-consistency + rotation-logic test suite
+npm run check:duplicates  # just the near-duplicate content check
 ```
 
 Committing runs `npm run verify:fast` automatically via a pre-commit hook. The hook lives in `.githooks/pre-commit` (tracked in git) rather than `.git/hooks/` (not tracked) so it travels with the repo — each clone needs to point git at it once with `git config core.hooksPath .githooks`, shown above.
@@ -27,10 +28,24 @@ See `PROJECT_JOURNAL.md` for a running log of engineering/product sessions, and 
 ## Project structure
 
 - `src/app/` — routes: today (`/`), `/yesterday`, `/random`, `/archive`, `/day/[date]` (permalinks with previous/next), `/calendar/[[...ym]]` (month browsing), `/rss.xml` (RSS 2.0), `/api/today` (JSON for the mudmantimsapps.com teaser), `/opengraph-image`
-- `src/lib/content.ts` — the Daily Item pool, date-rotation logic, `DailyItem` schema
+- `src/lib/content.ts` — the Daily Item pool (v1's 50 items, frozen), the issue manifest (`ISSUES`), `DailyItem` schema, date helpers
+- `src/lib/contentIssue2.ts` — Issue 2 (v1.1): 29 new items, premiering from 2026-11-01
+- `src/lib/rotation.ts` — the scheduler: a pure function of the date (see "Content schedule" below)
+- `src/lib/similarity.ts` — near-duplicate detection used by `duplicates.test.ts`
+- `content/BACKLOG.md` — content intake: ideas, status flow, editorial checklist, how to schedule an issue
 - `src/lib/universes.ts` — institution metadata (gradient, masthead, bureaucratic detail)
 - `src/lib/timeline.ts` — canonical shared-event slugs (mirrors `world/TIMELINE.md`)
 - `world/` — the world bible: constitution, institution profiles, timeline, style guide, supporting artifacts
+
+## Content schedule
+
+One document per day, the same for everyone, computed from the date alone (`src/lib/rotation.ts`):
+
+- **Before 2026-11-01:** the original v1 rotation, unchanged: 50 items, repeating every 50 days. Every one of these dates is pinned by a golden test (`src/lib/history.test.ts`), so permalinks, RSS guids and the calendar never change.
+- **From 2026-11-01 (v1.1):** Issue 2's 29 new items premiere one per day, then the whole library (79 items) rotates in reshuffled cycles, each item once per cycle, never twice within 30 days.
+- New content is added as a new issue with a future start date; nothing published is ever edited or reordered. See `content/BACKLOG.md`.
+
+`npm run check:duplicates` runs the duplicate detector alone.
 
 ## Continuous integration
 

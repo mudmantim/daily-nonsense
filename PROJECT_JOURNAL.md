@@ -286,3 +286,31 @@ Pushed commit `4977673` and got a definitive positive result within 25 seconds: 
 
 **Prepared:** `docs/DOMAIN_CUTOVER_CHECKLIST.md`, `docs/RELEASE_NOTES_v1.0.0.md` (the tag is proposed, pending owner sign-off).
 
+
+---
+
+## Session 11 — v1.1: decision C implemented: new issue, frozen history, sustainable intake (2026-10-15, Mad Lab campaign agent, isolated clone `content/v1.1`)
+
+**Context:** the owner chose option C from `docs/CONTENT_ROTATION_MEMO.md`: expand the library with new, original material, preserve every historical post and URL, and build a sustainable backlog with duplicate detection. Work is in the isolated clone, branched from `closeout/v1.0`, with pushing disabled. Merge, deploy and editorial sign-off stay with the owner. Chip wasn't contacted; editorial review of the new items is the owner's call (or a Tim-authorized Editorial Desk round).
+
+**The risk:** `ROTATION = seededShuffle(CONTENT_POOL, seed)` means adding a single item reshuffles *every* date, past ones included, which would silently rewrite permalinks, RSS guids and the calendar.
+
+**Done, test-first:**
+1. **History frozen before any code changed.** A golden fixture of all 304 dates (2026-01-01 to 2026-10-31) was generated from the unmodified v1 code. It's cross-checked against an independent copy of the v1 algorithm, and a sha256 of the 50 v1 items locks their copy. Committed first, passing on v1.
+2. **Scheduler** (`src/lib/rotation.ts`), a pure function of the date:
+   - before the **2026-11-01 cutover**, v1 exactly as shipped;
+   - then each issue premieres its new items once, in manifest order;
+   - then a long-term rotation, with each cycle a reshuffled permutation (derived seed per cycle) and a deterministic boundary repair guaranteeing a 30-day minimum repeat gap.
+
+   Appending a future issue provably changes no earlier date. Retirement is a field on a *new* issue. Bad manifests fail at module load.
+3. **Duplicate detection** (`src/lib/similarity.ts`, `duplicates.test.ts`): word-3-shingle Jaccard below 0.30, no shared verbatim sentence of 5+ words, no shared run over 11 words, unique headlines. Calibrated on v1, where the closest pair is `deir-5`/`museum-3` at 0.156, the deliberate Filing Cabinet twins.
+4. **Issue 2:** 29 new items across all eight institutions. They use only existing timeline events, and several resurface events that had appeared in only one institution (`committee-vote-1987`, `wednesday-that-wasnt`). None answers a never-answer question. `voice.test.ts` checks never-say words and vocabulary exclusivity for post-v1 items. World artifacts gained the new reference numbers (MUH-EX-445, Proposal 0622, LFA-0412, Subcommittee on Ambient Temperature).
+5. **Intake:** `content/BACKLOG.md` covers the append-only rules, the status flow, the editorial checklist, step-by-step issue scheduling and 38 pending premises.
+6. The archive and `/random` show only items already published, so queued premieres aren't spoiled.
+
+**Verified:** `npm run verify:fast` network-isolated, with 64/64 tests (up from 30). `next build` passed.
+
+**Owner decisions:**
+- editorial sign-off on the 29 items: edits are free until each item's premiere date;
+- merge before about 2026-10-29, or move the cutover first (steps in `docs/RELEASE_NOTES_v1.1.0.md`);
+- whether future issues go through a Chip Editorial Desk round.
