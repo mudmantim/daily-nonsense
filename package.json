@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --import tsx --test src/lib/*.test.ts",
+    "check:duplicates": "node --import tsx --test src/lib/duplicates.test.ts",
     "typecheck": "tsc --noEmit",
     "verify:fast": "npm run lint && npm run typecheck && npm test",
     "verify": "npm run verify:fast && npm run build"
