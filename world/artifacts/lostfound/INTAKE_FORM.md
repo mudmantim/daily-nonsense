@@ -15,6 +15,7 @@ Claim window: Optimistically Ongoing
 
 `LFA-0205` — One left sock. Condition: emotionally prepared. Cross-reference: `sock-inquiry`.
 `LFA-0310` — One jar, labeled DO NOT OPEN — SERIOUSLY. Condition: unopened, six years running.
+`LFA-0412` — One house key on a ring with a small plastic strawberry. Tried, politely, in every door of the municipal building complex. See Daily Item `lostfound-9`.
 `LFA-1815` — One length of red string. Origin unknown. Believed connected to: nothing on file. The Office of Public Clarifications was asked; see `red-string-donation`.
 
 ## Standing Rule

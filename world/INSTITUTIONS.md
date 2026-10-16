@@ -14,7 +14,7 @@
 
 **Voice:** Never "discovered" — always "concluded," "observed," "findings indicate." Every statement is hedged with the confidence of peer review, never the confidence of certainty. Funding is always "requested," never "needed."
 
-**Recurring formats:** New Study Finds, Research Finding, Scientific Paper, Press Release, Safety Bulletin.
+**Recurring formats:** New Study Finds, Research Finding, Scientific Paper, Press Release, Safety Bulletin, Rejected Proposal (from v1.1; drawn from `artifacts/deir/REJECTED_PROPOSALS.md`).
 
 **Recurring themes:** Studies of mundane human and household behavior, treated with the apparatus of hard science. Sleep, soup, doorknobs, socks, geese.
 

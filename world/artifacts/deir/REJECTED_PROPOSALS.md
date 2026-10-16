@@ -11,3 +11,5 @@
 **Proposal 0563:** *A Study Proposing to Definitively Resolve the Sock Migration Question.* Rejected. The Department's position, per `DEIR-SB-####`, is that ongoing uncertainty is itself a finding, and resolving it would require closing an active line of research the Department is not prepared to close.
 
 **Proposal 0601:** *A Request to Finally Open the Filing Cabinet.* Rejected unanimously, and unusually quickly, by a peer review panel that convened for four minutes.
+
+**Proposal 0622:** *A Controlled Trial of Whether a Watched Kettle Boils.* Rejected — the control kettle could not be left unobserved without a researcher observing that it was unobserved. Published as Daily Item `deir-11`.

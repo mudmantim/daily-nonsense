@@ -10,4 +10,6 @@
 
 **MUH-EX-444 — Assorted Staplers (Provenance Uncertain).** On loan from the Lost & Found Authority (`LFA-####`, believed connected to `stapler-migration`). Not for return.
 
+**MUH-EX-445 — One (1) Birthday Candle, Numeral 4.** Service record: a fourth, a fourteenth and a fortieth birthday. Accessioned with full honors. See Daily Item `museum-8`.
+
 **Catalog Note:** Numbers are assigned at accession and never reused, even for exhibits later deaccessioned, per Museum policy. There is currently no exhibit numbered lower than 1, and the Curator has declined to explain why cataloging did not begin there.

@@ -1,5 +1,6 @@
 import { UniverseId } from "./universes";
 import { createSchedule, seededShuffle, DAY_MS } from "./rotation";
+import { ISSUE_2_ITEMS, ISSUE_2_PREMIERES } from "./contentIssue2";
 
 export interface DailyItem {
   id: string;
@@ -503,7 +504,7 @@ const V1_POOL: DailyItem[] = [
 
 // Every item that has ever been or will be scheduled: the frozen v1 pool,
 // then each later issue's items appended in issue order. Append-only.
-const CONTENT_POOL: DailyItem[] = [...V1_POOL];
+const CONTENT_POOL: DailyItem[] = [...V1_POOL, ...ISSUE_2_ITEMS];
 
 const ITEMS_BY_ID = new Map(CONTENT_POOL.map((item) => [item.id, item]));
 
@@ -546,7 +547,14 @@ export interface IssueManifest {
 }
 
 // Append-only. Never edit an issue whose startDayKey has passed.
-export const ISSUES: readonly IssueManifest[] = [];
+export const ISSUES: readonly IssueManifest[] = [
+  {
+    id: "issue-2",
+    startDayKey: CUTOVER_DAY_KEY,
+    seed: 20261101,
+    premieres: ISSUE_2_PREMIERES,
+  },
+];
 
 const SCHEDULE = createSchedule({
   v1Rotation: V1_ROTATION,

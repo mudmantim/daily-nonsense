@@ -88,13 +88,15 @@ test("relatedDocuments links are reasonably reciprocal", () => {
 });
 
 test("daily rotation is deterministic and has no gaps", () => {
-  const poolSize = getAllItems().length;
+  // The v1 segment (before the v1.1 cutover) cycles the original 50 items;
+  // post-cutover cycles are covered in schedule.test.ts.
+  const poolSize = 50;
   const seen = new Set<string>();
   for (let i = 0; i < poolSize; i++) {
     const date = new Date(Date.UTC(2026, 0, 1 + i));
     seen.add(getItemForDate(date).id);
   }
-  assert.equal(seen.size, poolSize, "one full rotation cycle should surface every item exactly once");
+  assert.equal(seen.size, poolSize, "one full v1 rotation cycle should surface every v1 item exactly once");
 
   // Same date always yields the same item - this is the whole premise
   // of "everyone sees the same nonsense on the same day."
