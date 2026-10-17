@@ -201,7 +201,7 @@ export const ISSUE_3_ITEMS: DailyItem[] = [
     universe: "notices",
     format: "Reminder",
     title: "Reminder",
-    body: "Residents are reminded that the clocks go back one hour at 2 a.m. on Sunday. Residents who preferred the previous hour may continue to observe it privately, provided it is not used for municipal business.",
+    body: "Residents are reminded that when the clocks next go back one hour, the hour will be held at the town hall until it is needed again. Residents who preferred the previous hour may continue to observe it privately, provided it is not used for municipal business.",
     rarity: "common",
   },
   {
