@@ -18,6 +18,12 @@ The Bureau recognizes exactly one operational category: **Situation of Moderate 
 
 The Bureau's Situation Reports routinely generate requests for clarification, which are forwarded to the Office of Public Clarifications (est. the same year as the Bureau, 2009, see `reorg-2009`). The Bureau does not track how many of these requests are answered, because, per its own records, none have been.
 
+## Situation Reports on File (selected)
+
+- `BME-SR-0418` — the filing system's example number.
+- `BME-SR-0419` — fog over Whitcombe Park reported lower than usual; de-escalated to baseline at noon, when it left. See Daily Item `bureau-10`.
+- `BME-SR-0420` — lawn sprinklers on Cedar Row activating during rain; concerning, but not actionable. See Daily Item `bureau-11`.
+
 ## Precedents Cited
 
 The Mildly Haunted Ruling of 1975 (`emotionally-haunted-ruling`) remains the Bureau's earliest and most-cited precedent for the "concerning, but not actionable" standard.

@@ -57,79 +57,62 @@ When an idea is drafted, move its row to "Used" with the item id, so it isn't dr
 
 ## Ideas (status: idea)
 
-Premise one-liners. Not yet checked against the full checklist; some will not survive drafting.
+Premise one-liners. Not yet checked against the full checklist; some will not survive drafting. Numbering continues; a drafted idea moves to "Used" below.
 
 ### Department of Extremely Important Research
 | # | Premise |
 |---|---|
-| D1 | Finding: the phrase "quick question" precedes a question of a mean duration of 22 minutes. |
-| D2 | Safety Bulletin: the corner of the coffee table is observed to be nearer to shins after dark. |
-| D3 | Scientific Paper: the telephone rings within 40 seconds of a person sitting down, at a frequency the Department considers significant. |
-| D4 | Rejected Proposal 0650: a study of whether any bottle of ketchup has ever been finished. Rejected for lack of a completed sample. |
-| D5 | Research Finding: in a queue, the line not chosen is observed to move faster, in every replication. |
+| D2 | Safety Bulletin: the corner of the coffee table is observed to be nearer to shins after dark. (Check against `deir-9`, the stair which is not there: same household-in-the-dark territory.) |
+| D6 | Research Finding: doors marked PULL are pushed first in 61% of observations; doors marked PUSH are pulled first in 58%. |
+| D7 | Press Release: the Department acknowledges receipt of an unrequested peer review of its own findings, from the Committee. It has been peer-reviewed. |
 
 ### Museum of Useless History
 | # | Premise |
 |---|---|
-| M1 | Exhibit #446: one pen that wrote only on the second attempt to sign a form. |
-| M2 | Historical Discovery: the earliest known OUT OF ORDER sign, still attached to its machine, which is in working order. |
-| M3 | Curator's Notes: the gift shop's postcard of the Napkin Treaty is now itself on display beside the Treaty. |
-| M4 | Today in History: the first recorded use of "let's circle back," in a meeting that never circled back. |
-| M5 | Newly Unearthed Artifact: a single puzzle piece, sky-coloured, from a puzzle not held by the Museum. |
+| M4 | Today in History: the first recorded use of "let's circle back," in a meeting that never circled back. (Check: may read as office/internet culture.) |
+| M6 | Curator's Notes: the Museum's visitor book, now full, has been accessioned; visitors are asked to sign the new one, which will be accessioned when full. |
 
 ### Committee for Poor Decisions
 | # | Premise |
 |---|---|
-| C1 | Minutes: a motion to start meetings on time is carried over to the next meeting, which started late. |
-| C2 | Official Recommendation: "Any Other Business" is moved to the start of the agenda, where it stays. |
-| C3 | Emergency Decision: the minutes of next month's meeting are approved in advance, to save time. |
-| C4 | Approved Motion: the Subcommittee on Office Supplies requests a stapler of its own, and is told to wait and see. |
-| C5 | Meeting Minutes: a vote is tied, and the tie is referred to the Subcommittee on Precedent, which cites the duck. |
+| C1 | Minutes: a motion to start meetings on time is carried over to the next meeting, which started late. (Too close to `committee-7`, the shorter-meeting motion; rework or drop.) |
+| C6 | Approved Motion: a Subcommittee on Fewer Subcommittees is formed. It meets monthly. |
 
 ### Neighborhood Wildlife Reports
 | # | Premise |
 |---|---|
-| W1 | Incident Report: a squirrel has buried an acorn in the same planter forty times; the neighbor now suspects it is not the same acorn. |
-| W2 | Citizen Complaint: a crow leaves a bottle cap on the same doorstep each morning; the household has not reciprocated. |
 | W3 | Wildlife Alert: a moth and the porch light at number 14 have been in a standoff since dusk. |
-| W4 | Incident Report: the raccoon of interest (sock inquiry) is observed near the laundromat. No conclusions are drawn. |
 | W5 | Animal Interview: a cat sits on the exact centre of the newspaper being read and declines to elaborate. |
+| W6 | Wildlife Alert: a goose believed to be of the 1996 line is observed on the municipal building steps on budget day. It does not enter. (`goose-incident`; must not explain why the first one stayed.) |
 
 ### Lost & Found Authority
 | # | Premise |
 |---|---|
-| L1 | Item Recovered: one folded napkin; the method of folding is disputed by two members of staff (napkin-war, without resolving it). |
-| L2 | Custodial Note: one bookmark, recovered at page 41 of a book not on file. Staff have kept its place. |
-| L3 | Item Recovered: one HELLO MY NAME IS sticker, blank. |
-| L4 | Recognition Week reminder (seasonal): several items remain awaiting recognition; none were reunited this year either. |
-| L5 | Claim Status: one child's left shoe, size 9; the Authority has kept the space beside it free. |
+| L1 | Item Recovered: one folded napkin; the method of folding is disputed by two members of staff (napkin-war, without resolving it). (Held back from Issue 3 because `museum-15` already used the Napkin Treaty.) |
+| L5 | Claim Status: one child's left shoe, size 9; the Authority has kept the space beside it free. (Check against `lostfound-8`, the two gloves, and `lostfound-1`.) |
+| L6 | Item Recovered: one library card, for a library not on file, with no books out. |
 
 ### Official Public Notices
 | # | Premise |
 |---|---|
-| N1 | Residents are reminded that the pedestrian crossing button has been pressed a sufficient number of times. |
-| N2 | Residents are reminded that the clocks change on Sunday; residents who prefer the previous hour may keep it privately. |
 | N3 | Tuesday Compromise Observance (seasonal): residents are reminded it falls on a Tuesday. |
-| N4 | Residents are reminded that the bench outside the library faces the library. |
+| N5 | Reminder: the queue for the municipal service counter begins at the sign reading QUEUE BEGINS HERE, wherever the sign has been moved to. |
 
 ### Bureau of Mild Emergencies
 | # | Premise |
 |---|---|
-| B1 | Static Cling Remembrance Day (seasonal): the Bureau's quietest advisory of the year. |
-| B2 | Situation Report: fog reported as "lower than usual" over the park; de-escalated to baseline by noon. |
-| B3 | De-escalation Notice: a doorbell on Maple Court rang once with no one present. Classification of intent not made. |
-| B4 | Advisory: lawn sprinklers on Cedar Row continue to activate during rain. Concerning, not actionable. |
+| B3 | De-escalation Notice: a doorbell on Maple Court rang once with no one present. Classification of intent not made. (Held back: `bureau-7` and `bureau-9` already cover devices acting alone.) |
+| B5 | Situation Report: the wind chime on Poplar Way has been silent through three windy days. |
 
 ### Office of Public Clarifications
 | # | Premise |
 |---|---|
-| O1 | Response: a request for the Museum's opening time on Tuesday is declined (tuesday-compromise). |
-| O2 | Response: a request for the Committee's 1987 mandate is forwarded to the Committee, which has no position. |
-| O3 | Public Inquiry Log: a child asked "why?" four times in succession. All four were logged. |
-| O4 | Statement of Non-Clarification: regarding the Wednesday of 2004 (wednesday-that-wasnt). |
+| O1 | Response: a request for the Museum's opening time on Tuesday is declined (tuesday-compromise). (Hard to write without the Office stating a fact; see `OPC-MEMO-0004`.) |
+| O5 | Public Inquiry Log: a resident asked for directions to this office, from inside this office. |
 
 ## Used (drafted into an issue)
 
 | Issue | Items |
 |---|---|
 | Issue 2 (v1.1, premieres from 2026-11-01) | `deir-8`–`deir-11`, `museum-8`–`museum-12`, `committee-7`–`committee-10`, `wildlife-7`–`wildlife-9`, `lostfound-7`–`lostfound-10`, `notices-7`–`notices-9`, `bureau-7`–`bureau-9`, `clarifications-7`–`clarifications-9` |
+| Issue 3 (v1.2, premieres from 2026-12-01; draft) | `deir-12` (D1), `deir-13` (D5), `deir-14` (D4), `deir-15` (D3); `museum-13` (M1), `museum-14` (M2), `museum-15` (M3), `museum-16` (M5); `committee-11` (C3), `committee-12` (C4), `committee-13` (C5, adapted: both motions carry, since a tie would contradict the agenda template's "passes unanimously"), `committee-14` (C2); `wildlife-10` (W1), `wildlife-11` (W2), `wildlife-12` (W4); `lostfound-11` (L2), `lostfound-12` (L3), `lostfound-13` (new: the alarm clock), `lostfound-14` (L4); `notices-10` (N1), `notices-11` (N2), `notices-12` (N4); `bureau-10` (B2), `bureau-11` (B4), `bureau-12` (B1); `clarifications-10` (O3), `clarifications-11` (O2), `clarifications-12` (O4) |

@@ -17,6 +17,9 @@ Claim window: Optimistically Ongoing
 `LFA-0310` — One jar, labeled DO NOT OPEN — SERIOUSLY. Condition: unopened, six years running.
 `LFA-0412` — One house key on a ring with a small plastic strawberry. Tried, politely, in every door of the municipal building complex. See Daily Item `lostfound-9`.
 `LFA-1815` — One length of red string. Origin unknown. Believed connected to: nothing on file. The Office of Public Clarifications was asked; see `red-string-donation`.
+`LFA-1816` — One bookmark, recovered from a bench without its book, marking page 41. Page number recorded on the form. See Daily Item `lostfound-11`.
+`LFA-1817` — One adhesive name badge, HELLO MY NAME IS, the space beneath blank. No name written in. See Daily Item `lostfound-12`.
+`LFA-1818` — One alarm clock, still set for 6:15 a.m. Rings each morning; logged as heard. See Daily Item `lostfound-13`.
 
 ## Standing Rule
 

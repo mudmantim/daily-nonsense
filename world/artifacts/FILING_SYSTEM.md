@@ -15,6 +15,21 @@
 | Bureau of Mild Emergencies | `BME-SR-[4 digits]` | `BME-SR-0418` | All Bureau documents are Situation Reports at intake, regardless of eventual format (Advisory, De-escalation Notice). The SR number never changes. |
 | Office of Public Clarifications | `OPC-NC-[4 digits]` | `OPC-NC-0214` | NC = Non-Clarification, the office's only document type, regardless of how the inquiry was originally phrased. |
 
+## Highest number on file (as of Issue 3)
+
+New documents continue from these. Update this table whenever an issue issues a new number.
+
+| Institution | Highest on file | Where |
+|---|---|---|
+| DEIR | `DEIR-RF-2214`; Rejected Proposal 0650 | this file; `deir/REJECTED_PROPOSALS.md` |
+| Museum | `MUH-EX-448` | `museum/CATALOG_EXCERPT.md` |
+| Committee | `CPD-MM-2024-118` | this file |
+| Wildlife | `NWR-IR-0091` | this file |
+| Lost & Found | `LFA-1818` | `lostfound/INTAKE_FORM.md` |
+| Notices | `OPN-4474` | `notices/NOTICE_TEMPLATE.md` |
+| Bureau | `BME-SR-0420` | `bureau/CLASSIFICATION_MANUAL.md` |
+| Office | `OPC-NC-0220` | `clarifications/COMPLAINT_AND_RESPONSE.md` |
+
 ## Cross-referencing
 
 When a document from one institution refers to an event or object also on file elsewhere (see `/world/TIMELINE.md`), it cites the other institution's reference number rather than re-describing the event. This is how a reader who cross-references two Daily Items months apart can confirm they're the same incident.

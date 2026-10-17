@@ -13,3 +13,5 @@
 **Proposal 0601:** *A Request to Finally Open the Filing Cabinet.* Rejected unanimously, and unusually quickly, by a peer review panel that convened for four minutes.
 
 **Proposal 0622:** *A Controlled Trial of Whether a Watched Kettle Boils.* Rejected — the control kettle could not be left unobserved without a researcher observing that it was unobserved. Published as Daily Item `deir-11`.
+
+**Proposal 0650:** *Whether Any Bottle of Ketchup Has Ever Been Finished.* Rejected — the study design required one finished bottle as a control, and none could be located in any municipal kitchen. Resubmission encouraged on receipt of a finished bottle. Published as Daily Item `deir-14`.

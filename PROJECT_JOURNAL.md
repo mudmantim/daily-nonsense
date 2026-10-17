@@ -314,3 +314,20 @@ Pushed commit `4977673` and got a definitive positive result within 25 seconds: 
 - editorial sign-off on the 29 items: edits are free until each item's premiere date;
 - merge before about 2026-10-29, or move the cutover first (steps in `docs/RELEASE_NOTES_v1.1.0.md`);
 - whether future issues go through a Chip Editorial Desk round.
+
+---
+
+## Session 12 — Issue 3 drafted (2026-10-17, Mad Lab campaign agent, worktree branch `content/issue-3`)
+
+**Context:** content and schedule work only, on a local branch from `content/v1.1` (`e023af6`, live in production). Nothing pushed or deployed; editorial sign-off and the merge stay with the owner.
+
+**Done:**
+- `src/lib/contentIssue3.ts`: 28 items (Department 4, Museum 4, Committee 4, Wildlife 3, Lost & Found 4, Notices 3, Bureau 3, Office 3; 7 rare), drafted from `content/BACKLOG.md` premises plus one new one (the alarm clock, `lostfound-13`). Timeline events resurface in new institutions: the duck precedent in the Committee's paint vote, `committee-vote-1987` at the Office, the Napkin Treaty's postcard, the raccoon at the laundromat, Recognition Week and Static Cling Remembrance Day from the holiday calendar.
+- Scheduled as `issue-3` from **2026-12-01** (seed 20261201), premieres to 2026-12-28, no institution two days running. 2026-11-30 stays a rotation day (`notices-3`).
+- Tests 64 → 72: `issue3.test.ts`, including a check that every date before each appended issue matches the schedule rebuilt without it, and Nov 1–30 pinned to the live schedule. Two Issue-2-is-last assumptions in `schedule.test.ts` generalized.
+- World artifacts, backlog ("Used" + new ideas) and `docs/RELEASE_NOTES_v1.2.0.md` (draft) updated.
+
+**Judgment calls for editorial review:** `committee-13` (adapts the backlog's tie vote, which would contradict "passes unanimously"), `clarifications-11` (touches the Committee's never-discussed 1987 mandate without answering it), `notices-12` (cites `OPN-4473` without saying why, per the notice template), `deir-14` (ketchup as a generic noun), `notices-11` (clock change, a real-world custom).
+
+**Owner decisions:** sign-off on the 28 items; merge and deploy by 2026-11-24, or move the start date first.
+

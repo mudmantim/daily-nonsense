@@ -22,6 +22,14 @@
 
 ---
 
+**Inquiries received (public counter), logged as `OPC-NC-0216` through `OPC-NC-0220`:**
+
+"Why?" (four times in succession, then once more on the way out.)
+
+**Response filed, five times:** the standard response. See Daily Item `clarifications-10`.
+
+---
+
 **Internal memo (not for public release), Ref `OPC-MEMO-0004`:**
 
 Staff are reminded that "further clarification is not available at this time" is the office's sole permitted response format, regardless of how the inquiry is phrased, how many times it has been asked, or how reasonable the request. Deviating from this format, even to say "we don't know," constitutes an unauthorized clarification and will be treated as such.

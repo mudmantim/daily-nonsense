@@ -27,3 +27,6 @@ of the first clause's actual importance.]
 `OPN-4471` — sighs during Monday meetings must be pre-approved by Facilities.
 `OPN-1102` — the streetlight on Elm has feelings.
 `OPN-0290` — Tuesday, per the Compromise of 2003 (`tuesday-compromise`).
+`OPN-4472` — the crossing button on Market Row has been pressed a sufficient number of times (Daily Item `notices-10`).
+`OPN-4473` — the clocks go back one hour; the previous hour may be observed privately (Daily Item `notices-11`).
+`OPN-4474` — the bench outside the public library faces the library; to be read alongside `OPN-4473`, for reasons the notice does not give (Daily Item `notices-12`).
