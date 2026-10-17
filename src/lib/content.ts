@@ -1,6 +1,7 @@
 import { UniverseId } from "./universes";
 import { createSchedule, seededShuffle, DAY_MS } from "./rotation";
 import { ISSUE_2_ITEMS, ISSUE_2_PREMIERES } from "./contentIssue2";
+import { ISSUE_3_ITEMS, ISSUE_3_PREMIERES } from "./contentIssue3";
 
 export interface DailyItem {
   id: string;
@@ -504,7 +505,7 @@ const V1_POOL: DailyItem[] = [
 
 // Every item that has ever been or will be scheduled: the frozen v1 pool,
 // then each later issue's items appended in issue order. Append-only.
-const CONTENT_POOL: DailyItem[] = [...V1_POOL, ...ISSUE_2_ITEMS];
+const CONTENT_POOL: DailyItem[] = [...V1_POOL, ...ISSUE_2_ITEMS, ...ISSUE_3_ITEMS];
 
 const ITEMS_BY_ID = new Map(CONTENT_POOL.map((item) => [item.id, item]));
 
@@ -553,6 +554,12 @@ export const ISSUES: readonly IssueManifest[] = [
     startDayKey: CUTOVER_DAY_KEY,
     seed: 20261101,
     premieres: ISSUE_2_PREMIERES,
+  },
+  {
+    id: "issue-3",
+    startDayKey: "2026-12-01",
+    seed: 20261201,
+    premieres: ISSUE_3_PREMIERES,
   },
 ];
 

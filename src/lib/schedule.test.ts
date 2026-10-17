@@ -53,11 +53,15 @@ test("premieres never put the same institution on consecutive days", () => {
   }
 });
 
-test("after the premieres, each rotation cycle is a permutation of the full library", () => {
+test("after the latest issue's premieres, each rotation cycle is a permutation of the full library", () => {
+  // Earlier issues' rotations are cut short by the next issue's start;
+  // the latest issue's rotation runs indefinitely over every item.
+  const latest = ISSUES[ISSUES.length - 1];
+  const rotationStart = utc(latest.startDayKey).getTime() + latest.premieres.length * DAY;
   const n = getAllItems().length;
   const all = getAllItems().map((item) => item.id).sort();
   for (let c = 0; c < 25; c++) {
-    const cycle = Array.from({ length: n }, (_, p) => idAt(PREMIERES.length + c * n + p));
+    const cycle = Array.from({ length: n }, (_, p) => getItemForDate(new Date(rotationStart + (c * n + p) * DAY)).id);
     assert.deepEqual([...cycle].sort(), all, `cycle ${c}`);
   }
 });
@@ -111,7 +115,7 @@ test("only published items reach the archive and /random", () => {
   assert.equal(getPublishedItems(at(0)).length, 51);
   assert.ok(getPublishedItems(at(0)).some((i) => i.id === PREMIERES[0]));
   assert.ok(!getPublishedItems(at(0)).some((i) => i.id === PREMIERES[1]), "tomorrow's premiere stays hidden");
-  assert.equal(getPublishedItems(at(PREMIERES.length - 1)).length, getAllItems().length);
+  assert.equal(getPublishedItems(at(PREMIERES.length - 1)).length, V1_POOL_IDS.length + PREMIERES.length);
   for (let i = 0; i < 200; i++) {
     const id = getRandomItem(utc("2026-10-15")).id;
     assert.ok(V1_POOL_IDS.includes(id), `/random served unpublished ${id}`);
