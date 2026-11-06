@@ -45,7 +45,7 @@ export const ISSUE_3_ITEMS: DailyItem[] = [
     universe: "deir",
     format: "Safety Bulletin",
     title: "Safety Bulletin",
-    body: "The Department advises that a telephone is observed to ring within forty seconds of a person sitting down, at a frequency findings indicate is significant. The effect is strongest when the person is holding a hot drink. Pending further study, residents are advised to sit down with the telephone already in hand.",
+    body: "Findings indicate that a telephone rings within forty seconds of a person sitting down, at a frequency the Department has determined to be significant. The effect is strongest when the person is holding a hot drink. Pending further study, the Department's interim guidance is to sit down with the telephone already in hand.",
     rarity: "common",
   },
 
