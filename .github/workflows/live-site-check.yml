@@ -1,0 +1,58 @@
+# Daily live-site check (free: GitHub Actions on a public repo). Read-only GET
+# requests against production; it deploys and changes nothing.
+# Alerts: a failed run notifies the repo owner through GitHub's Actions
+# notifications, and the job also opens (or comments on) an issue labelled
+# "live-site-alert". See docs/OPERATIONS.md.
+name: live-site-check
+
+on:
+  schedule:
+    # 01:20 UTC: 80 minutes after the 00:00 UTC rollover, so the one-hour
+    # CDN cache on /api/today and /rss.xml can't cause a false alarm.
+    - cron: "20 1 * * *"
+  workflow_dispatch:
+    inputs:
+      simulate_failure:
+        description: "Fail on purpose to test the alert path (does not check the site)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: live-site-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/ops
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check homepage, today's edition, /api/today and the release gate
+        id: check
+        env:
+          SIMULATE_FAILURE: ${{ inputs.simulate_failure && '1' || '0' }}
+        run: node scripts/ops/live-check.mjs 2>&1 | tee check.log; exit ${PIPESTATUS[0]}
+      - name: Open or update the alert issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create live-site-alert --color B60205 --description "Daily live-site check failed" 2>/dev/null || true
+          body="$(printf 'The daily live-site check failed.\n\nRun: %s\n\n```\n%s\n```\n' "$RUN_URL" "$(tail -n 20 check.log)")"
+          open=$(gh issue list --label live-site-alert --state open --json number --jq '.[0].number')
+          if [ -n "$open" ]; then
+            gh issue comment "$open" --body "$body"
+          else
+            gh issue create --label live-site-alert --title "Live site check failed ($(date -u +%F))" --body "$body"
+          fi
